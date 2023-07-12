@@ -12,6 +12,6 @@
 .\bin\comtest.o: ..\..\Source\include\mpu_wrappers.h
 .\bin\comtest.o: ..\..\Source\include\task.h
 .\bin\comtest.o: ..\..\Source\include\list.h
-.\bin\comtest.o: ..\Common\include\serial.h
+.\bin\comtest.o: ..\Starter_Files_V1\header\serial.h
 .\bin\comtest.o: ..\Common\include\comtest.h
 .\bin\comtest.o: ..\Common\include\partest.h

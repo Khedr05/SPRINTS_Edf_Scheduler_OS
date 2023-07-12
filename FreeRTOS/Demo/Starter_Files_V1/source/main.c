@@ -73,7 +73,7 @@
 
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
-
+TaskHandle_t LedTask_Handler=NULL;
 
 /*
  * Configure the processor for use with the Keil demo board.  This is very
@@ -82,8 +82,19 @@
  */
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
+void UART_Task1 (void *pvParameter)
+	 {
 
+		 const char *message = "\n FIRST TASK IS SENDING A STRING\0";
+  	int i ;
+		 	   int j;
 
+for(;;) 
+	{
+	}		
+		
+ }
+ 
 /*
  * Application entry point:
  * Starts all the other tasks, then starts the scheduler. 
@@ -95,7 +106,14 @@ int main( void )
 
 	
     /* Create Tasks here */
-
+xTaskPeriodicCreate(
+	UART_Task1,
+	"UART_Task1",
+	configMINIMAL_STACK_SIZE,
+	(void*) NULL,
+		2,
+	&LedTask_Handler,100);
+	
 
 	/* Now all the tasks have been started - start the scheduler.
 

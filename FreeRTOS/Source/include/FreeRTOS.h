@@ -54,7 +54,6 @@ extern "C" {
 
 /* Application specific configuration options. */
 #include "FreeRTOSConfig.h"
-
 /* Basic FreeRTOS definitions. */
 #include "projdefs.h"
 
