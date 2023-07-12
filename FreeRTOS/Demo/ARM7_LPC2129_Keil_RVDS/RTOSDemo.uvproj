@@ -438,82 +438,22 @@
             <File>
               <FileName>GPIO.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\GPIO.c</FilePath>
+              <FilePath>..\Starter_Files_V1\source\GPIO.c</FilePath>
             </File>
             <File>
               <FileName>GPIO_cfg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\GPIO_cfg.c</FilePath>
+              <FilePath>..\Starter_Files_V1\source\GPIO_cfg.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
+              <FilePath>..\Starter_Files_V1\source\main.c</FilePath>
             </File>
             <File>
               <FileName>serial.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\serial\serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>task1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\task1.h</FilePath>
-            </File>
-            <File>
-              <FileName>task2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\task2.c</FilePath>
-            </File>
-            <File>
-              <FileName>task2.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\task2.h</FilePath>
-            </File>
-            <File>
-              <FileName>task3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\task3.c</FilePath>
-            </File>
-            <File>
-              <FileName>task3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\task3.h</FilePath>
-            </File>
-            <File>
-              <FileName>task1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\task1.c</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\A2_task1.c</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\A2_task1.h</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\A2_task2.c</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task2.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\A2_task2.h</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\A2_task3.c</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\A2_task3.h</FilePath>
+              <FilePath>..\Starter_Files_V1\source\serial.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -987,82 +927,22 @@
             <File>
               <FileName>GPIO.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\GPIO.c</FilePath>
+              <FilePath>..\Starter_Files_V1\source\GPIO.c</FilePath>
             </File>
             <File>
               <FileName>GPIO_cfg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\GPIO_cfg.c</FilePath>
+              <FilePath>..\Starter_Files_V1\source\GPIO_cfg.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
+              <FilePath>..\Starter_Files_V1\source\main.c</FilePath>
             </File>
             <File>
               <FileName>serial.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\serial\serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>task1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\task1.h</FilePath>
-            </File>
-            <File>
-              <FileName>task2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\task2.c</FilePath>
-            </File>
-            <File>
-              <FileName>task2.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\task2.h</FilePath>
-            </File>
-            <File>
-              <FileName>task3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\task3.c</FilePath>
-            </File>
-            <File>
-              <FileName>task3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\task3.h</FilePath>
-            </File>
-            <File>
-              <FileName>task1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\task1.c</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\A2_task1.c</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\A2_task1.h</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\A2_task2.c</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task2.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\A2_task2.h</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\A2_task3.c</FilePath>
-            </File>
-            <File>
-              <FileName>A2_task3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\A2_task3.h</FilePath>
+              <FilePath>..\Starter_Files_V1\source\serial.c</FilePath>
             </File>
           </Files>
         </Group>

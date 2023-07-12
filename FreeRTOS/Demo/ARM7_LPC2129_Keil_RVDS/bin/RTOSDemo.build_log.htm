@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.29.0.0
 Copyright (C) 2019 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: atef ahmed, sprints, LIC=----
+License Information: Sharpel M, Na, LIC=----
  
 Tool Versions:
 Toolchain:       MDK-Lite  Version: 5.29.0.0
@@ -21,19 +21,36 @@ Target DLL:      UL2ARM.DLL V1.74.10.0
 Dialog DLL:      TARMP.DLL V1.53.0.0
  
 <h2>Project:</h2>
-C:\Users\atef\Desktop\RTOS\sprints\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\RTOSDemo.uvproj
-Project File Date:  07/06/2023
+D:\sprints\Rtos\SPRINTS_Edf_Scheduler_OS\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\RTOSDemo.uvproj
+Project File Date:  07/12/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'RTOSDemo_THUMB'
+Rebuild target 'RTOSDemo_THUMB'
+assembling serialISR.s...
+compiling ParTest.c...
+compiling GPIO.c...
+..\Starter_Files_V1\source\GPIO.c(49): warning:  #127-D: expected a statement
+  		}
+..\Starter_Files_V1\source\GPIO.c: 1 warning, 0 errors
 compiling GPIO_cfg.c...
 compiling main.c...
+compiling serial.c...
+..\Starter_Files_V1\source\serial.c(185): warning:  #550-D: variable "cChar"  was set but never used
+  signed char cChar;
+..\Starter_Files_V1\source\serial.c: 1 warning, 0 errors
+assembling Startup.s...
+compiling list.c...
+compiling queue.c...
+compiling tasks.c...
+compiling heap_2.c...
+compiling port.c...
+assembling portASM.s...
 linking...
-Program Size: Code=10560 RO-data=32 RW-data=196 ZI-data=15356  
+Program Size: Code=7748 RO-data=32 RW-data=184 ZI-data=15360  
 FromELF: creating hex file...
-".\bin\RTOSDemo.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:01
+".\bin\RTOSDemo.axf" - 0 Error(s), 2 Warning(s).
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
