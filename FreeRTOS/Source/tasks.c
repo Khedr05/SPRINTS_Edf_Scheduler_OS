@@ -2926,15 +2926,18 @@ BaseType_t xTaskIncrementTick( void )
 									}
 							#endif /* configUSE_PREEMPTION */
 					}
-					#else //if EDF Scheduler is used
+					#else //if EDF Scheduler is used  /* /*-----------------EDF_SHERIF START -------------------- */
 					{
-							/* Update the deadline of the unblocked task, which equals (xTaskPeriod + xConstTickCount). */
 							
+						 /* Update the deadline of the delayed task that will be undelayed and will change its 
+						   list to be ready list which equals (xTaskPeriod + xConstTickCount). */
+							listSET_LIST_ITEM_VALUE( &( ( pxTCB )->xStateListItem ), (TickType_t)((( pxTCB)->xTaskPeriod) + xConstTickCount));
 						
 							/* Place the unblocked task into the appropriate ready
-							 * list according to its deadline. */
-							prvAddTaskToReadyList( pxTCB );
+							 * will be put in the list according to its deadline stored in item value */
+							  prvAddTaskToReadyList( pxTCB );
 							
+						/*-----------------EDF_SHERIF END -------------------- */
 							/* a context switch should
 							 * only be performed if the unblocked task has a
 							 * deadline that is less than the
