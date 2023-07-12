@@ -40,6 +40,8 @@ task.h is included from an application file. */
 #include "timers.h"
 #include "stack_macros.h"
 
+
+#define IDLE_OFFSET       10
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
 because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
 for the header files above, but not in this file, in order to generate the
@@ -223,8 +225,16 @@ count overflows. */
 	vListInsertEnd( &( pxReadyTasksLists[ ( pxTCB )->uxPriority ] ), &( ( pxTCB )->xStateListItem ) ); \
 	tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
 #else
-#define prvAddTaskToReadyList( pxTCB )/*xGenericListIteam must contain thedeadline value */ \
- vListInsert(&(xReadyTasksListEDF), &( ( pxTCB )->xStateListItem ))
+/*xGenericListIteam must contain thedeadline value */
+#define prvAddTaskToReadyList( pxTCB )  \
+  /*ADDED V2 IDLE update */                                                                       \
+  traceMOVED_TASK_TO_READY_STATE( pxTCB );														                       \
+  if(listGET_LIST_ITEM_VALUE( &( xIdleTaskHandle->xStateListItem ) ) <= listGET_LIST_ITEM_VALUE( &( ( pxTCB )->xStateListItem ) )) \
+ {                                                                                                                                 \
+	 listSET_LIST_ITEM_VALUE( &( ( xIdleTaskHandle->xStateListItem ) ), ( pxTCB)->xTaskPeriod +IDLE_OFFSET);                       \
+ }                                                                                                                                   \
+  vListInsert(&(xReadyTasksListEDF), &( ( pxTCB )->xStateListItem ))  \
+  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
 #endif
 
 /*

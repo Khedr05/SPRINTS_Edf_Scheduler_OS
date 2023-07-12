@@ -73,6 +73,21 @@
 
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
+	
+void vApplicationIdleHook( void );
+void vApplicationTickHook( void );
+
+void vApplicationIdleHook( void )
+{
+	GPIO_write(PORT_0,PIN1,PIN_IS_HIGH);
+}
+
+void vApplicationTickHook( void )
+{
+	GPIO_toggle(PORT_0,PIN2);
+}
+
+
 TaskHandle_t LedTask_Handler=NULL;
 
 /*

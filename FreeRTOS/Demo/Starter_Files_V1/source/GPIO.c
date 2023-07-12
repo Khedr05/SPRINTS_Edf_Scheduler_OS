@@ -108,3 +108,22 @@ void GPIO_write(portX_t portName, pinX_t pinNum, pinState_t pinState)
 			}
 	}
 }
+
+
+void GPIO_toggle(portX_t PortName, pinX_t pinNum)
+{
+	pinState_t pinVal;
+	pinVal = GPIO_read(PortName,pinNum);
+	if(pinVal == PIN_IS_HIGH)
+	{
+		GPIO_write(PortName,pinNum,PIN_IS_LOW);
+	}
+	else if(pinVal == PIN_IS_LOW)
+	{
+		GPIO_write(PortName,pinNum,PIN_IS_HIGH);
+	}
+	else
+	{
+		//do nothing
+	}
+}
