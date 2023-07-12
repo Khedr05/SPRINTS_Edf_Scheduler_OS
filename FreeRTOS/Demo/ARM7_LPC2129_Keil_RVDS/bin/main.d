@@ -1,4 +1,4 @@
-.\bin\main.o: main.c
+.\bin\main.o: ..\Starter_Files_V1\source\main.c
 .\bin\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\bin\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\bin\main.o: ..\..\Source\include\FreeRTOS.h
@@ -15,8 +15,3 @@
 .\bin\main.o: ..\..\Source\include\list.h
 .\bin\main.o: ..\Starter_Files_V1\header\serial.h
 .\bin\main.o: ..\Starter_Files_V1\header\GPIO.h
-.\bin\main.o: A2_task1.h
-.\bin\main.o: ..\..\Source\include\semphr.h
-.\bin\main.o: ..\..\Source\include\queue.h
-.\bin\main.o: A2_task2.h
-.\bin\main.o: A2_task3.h
