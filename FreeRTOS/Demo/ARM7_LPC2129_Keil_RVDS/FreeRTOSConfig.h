@@ -41,6 +41,10 @@
  *
  * See http://www.freertos.org/a00110.html
  *----------------------------------------------------------*/
+/*******************************EDF_Mowafey****************************************/
+			/*Define the IDLE task deadline*/
+#define  INITIDLEPERIOD  				100
+/*****************************END_EDF_Mowafey***************************************/
 
 #define configUSE_PREEMPTION		1
 #define configUSE_IDLE_HOOK			1
