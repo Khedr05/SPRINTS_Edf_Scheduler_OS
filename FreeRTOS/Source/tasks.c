@@ -3613,14 +3613,28 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 			the list, and an occasional incorrect value will not matter.  If
 			the ready list at the idle priority contains more than one task
 			then a task other than the idle task is ready to execute. */
-			if( listCURRENT_LIST_LENGTH( &( pxReadyTasksLists[ tskIDLE_PRIORITY ] ) ) > ( UBaseType_t ) 1 )
-			{
-				taskYIELD();
-			}
-			else
-			{
-				mtCOVERAGE_TEST_MARKER();
-			}
+/*******************************************EDF_Mowafey*************************************************************************/
+			/*Check for other tasks with the same deadline of the IDLE task*/
+			#if(configUSE_EDF_SCHEDULER == 1 )
+				if( listCURRENT_LIST_LENGTH( &( xReadyTasksListEDF ) ) > ( UBaseType_t ) 1 )
+				{
+					taskYIELD();
+				}
+				else
+				{
+					mtCOVERAGE_TEST_MARKER();
+				}
+			#else	
+				if( listCURRENT_LIST_LENGTH( &( pxReadyTasksLists[ tskIDLE_PRIORITY ] ) ) > ( UBaseType_t ) 1 )
+				{
+					taskYIELD();
+				}
+				else
+				{
+					mtCOVERAGE_TEST_MARKER();
+				}	
+			#endif
+/*******************************************END_EDF_Mowafey******************************************************************************/	
 		}
 		#endif /* ( ( configUSE_PREEMPTION == 1 ) && ( configIDLE_SHOULD_YIELD == 1 ) ) */
 
