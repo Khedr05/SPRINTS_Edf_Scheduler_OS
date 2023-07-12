@@ -228,13 +228,8 @@ count overflows. */
 /*xGenericListIteam must contain thedeadline value */
 #define prvAddTaskToReadyList( pxTCB )  \
   /*ADDED V2 IDLE update */                                                                       \
-  traceMOVED_TASK_TO_READY_STATE( pxTCB );														                       \
-  if(listGET_LIST_ITEM_VALUE( &( xIdleTaskHandle->xStateListItem ) ) <= listGET_LIST_ITEM_VALUE( &( ( pxTCB )->xStateListItem ) )) \
- {                                                                                                                                 \
-	 listSET_LIST_ITEM_VALUE( &( ( xIdleTaskHandle->xStateListItem ) ), ( pxTCB)->xTaskPeriod +IDLE_OFFSET);                       \
- }                                                                                                                                   \
   vListInsert(&(xReadyTasksListEDF), &( ( pxTCB )->xStateListItem ))  \
-  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
+//  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
 #endif
 
 /*
@@ -573,14 +568,28 @@ static void prvResetNextTaskUnblockTime( void );
  * Called after a Task_t structure has been allocated either statically or
  * dynamically to fill in the structure's members.
  */
+ 
+ 
+ #if ( configUSE_EDF_SCHEDULER == 1)	
 static void prvInitialiseNewTask( 	TaskFunction_t pxTaskCode,
-									const char * const pcName, 		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+									const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 									const uint32_t ulStackDepth,
 									void * const pvParameters,
 									UBaseType_t uxPriority,
 									TaskHandle_t * const pxCreatedTask,
 									TCB_t *pxNewTCB,
-									const MemoryRegion_t * const xRegions ) PRIVILEGED_FUNCTION;
+									const MemoryRegion_t * const xRegions,
+                  TickType_t period)PRIVILEGED_FUNCTION;
+#else
+static void prvInitialiseNewTask( 	TaskFunction_t pxTaskCode,
+									const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+									const uint32_t ulStackDepth,
+									void * const pvParameters,
+									UBaseType_t uxPriority,
+									TaskHandle_t * const pxCreatedTask,
+									TCB_t *pxNewTCB,
+									const MemoryRegion_t * const xRegions)PRIVILEGED_FUNCTION;
+#endif	
 
 /*
  * Called after a new task has been created and initialised to place the task
@@ -757,7 +766,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) PRIVILEGED_FUNCTION;
 
 /*MOMEN_EDF*/
 
-//#if ( configUSE_EDF_SCHEDULER == 0 )
+#if ( configUSE_EDF_SCHEDULER == 0 )
 
 	BaseType_t xTaskCreate(	TaskFunction_t pxTaskCode,
 							const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
@@ -847,7 +856,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) PRIVILEGED_FUNCTION;
 		return xReturn;
 	}
 	
-//#else
+#else
 BaseType_t xTaskPeriodicCreate(	TaskFunction_t pxTaskCode,
 							const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 							const configSTACK_DEPTH_TYPE usStackDepth,
@@ -926,10 +935,10 @@ BaseType_t xTaskPeriodicCreate(	TaskFunction_t pxTaskCode,
 			#endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
        
 			/*E.C. : initialize the period */
-      pxNewTCB->xTaskPeriod = period;
+     // pxNewTCB->xTaskPeriod = period;
 			listSET_LIST_ITEM_VALUE( &( ( pxNewTCB )->xStateListItem ), ( pxNewTCB)->xTaskPeriod + xTaskGetTickCount());
+			prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL,period);
 			prvAddNewTaskToReadyList( pxNewTCB );
-			prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL );
 			xReturn = pdPASS;
 		}
 		else
@@ -939,10 +948,11 @@ BaseType_t xTaskPeriodicCreate(	TaskFunction_t pxTaskCode,
 
 		return xReturn;
 	}
-//#endif
+#endif
 
 #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
-/*-----------------------------------------------------------*/
+/*----------------------MOMEN_EDF-------------------------------------*/
+#if ( configUSE_EDF_SCHEDULER == 1)	
 static void prvInitialiseNewTask( 	TaskFunction_t pxTaskCode,
 									const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 									const uint32_t ulStackDepth,
@@ -950,7 +960,18 @@ static void prvInitialiseNewTask( 	TaskFunction_t pxTaskCode,
 									UBaseType_t uxPriority,
 									TaskHandle_t * const pxCreatedTask,
 									TCB_t *pxNewTCB,
-									const MemoryRegion_t * const xRegions )
+									const MemoryRegion_t * const xRegions,
+                  TickType_t period)
+#else
+static void prvInitialiseNewTask( 	TaskFunction_t pxTaskCode,
+									const char * const pcName,		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+									const uint32_t ulStackDepth,
+									void * const pvParameters,
+									UBaseType_t uxPriority,
+									TaskHandle_t * const pxCreatedTask,
+									TCB_t *pxNewTCB,
+									const MemoryRegion_t * const xRegions)	
+#endif									
 {
 StackType_t *pxTopOfStack;
 UBaseType_t x;
@@ -1052,7 +1073,13 @@ UBaseType_t x;
 		mtCOVERAGE_TEST_MARKER();
 	}
 
-	pxNewTCB->uxPriority = uxPriority;
+	pxNewTCB->uxPriority  = uxPriority;
+	
+	#if( configUSE_EDF_SCHEDULER == 1 )
+	pxNewTCB->xTaskPeriod = period;
+	#endif
+	
+	
 	#if ( configUSE_MUTEXES == 1 )
 	{
 		pxNewTCB->uxBasePriority = uxPriority;

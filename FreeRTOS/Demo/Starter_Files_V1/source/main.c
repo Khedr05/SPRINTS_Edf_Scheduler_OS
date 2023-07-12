@@ -79,12 +79,12 @@ void vApplicationTickHook( void );
 
 void vApplicationIdleHook( void )
 {
-	GPIO_write(PORT_0,PIN1,PIN_IS_HIGH);
+	GPIO_write(PORT_0,PIN2,PIN_IS_HIGH);
 }
 
 void vApplicationTickHook( void )
 {
-	GPIO_toggle(PORT_0,PIN2);
+	GPIO_toggle(PORT_0,PIN1);
 }
 
 
@@ -101,14 +101,56 @@ void UART_Task1 (void *pvParameter)
 	 {
 
 		 const char *message = "\n FIRST TASK IS SENDING A STRING\0";
-  	int i ;
-		 	   int j;
+  	 int i ;
+		 int j;
 
-for(;;) 
-	{
-	}		
+    for(;;) 
+	  {
+	  }		
 		
  }
+	 
+ 
+	 
+ 
+ 
+ TaskHandle_t task1_Handler = NULL;
+ TaskHandle_t task2_Handler = NULL;
+ void task1 (void *pvParameter)
+	 {
+
+		TickType_t xLastWakeTime;
+		const TickType_t xFrequency = 110;
+     // Initialise the xLastWakeTime variable with the current time.
+     xLastWakeTime = xTaskGetTickCount();
+
+    for(;;) 
+	  {
+			GPIO_write(PORT_0,PIN2,PIN_IS_LOW);
+			GPIO_toggle(PORT_0,PIN3);
+			vTaskDelayUntil(&xLastWakeTime, xFrequency );
+	  }		
+		
+ }
+	 
+ void task2 (void *pvParameter)
+	 {
+
+		TickType_t xLastWakeTime;
+		const TickType_t xFrequency = 255;
+     // Initialise the xLastWakeTime variable with the current time.
+     xLastWakeTime = xTaskGetTickCount();
+
+    for(;;) 
+	  {
+			GPIO_write(PORT_0,PIN2,PIN_IS_LOW);
+			GPIO_toggle(PORT_0,PIN4);
+			vTaskDelayUntil(&xLastWakeTime, xFrequency );
+	  }		
+		
+ }
+ 
+ 
  
 /*
  * Application entry point:
@@ -122,12 +164,19 @@ int main( void )
 	
     /* Create Tasks here */
 xTaskPeriodicCreate(
-	UART_Task1,
-	"UART_Task1",
+	task1,
+	"task1",
 	configMINIMAL_STACK_SIZE,
 	(void*) NULL,
-		2,
-	&LedTask_Handler,100);
+		1,
+	&task1_Handler,110);
+xTaskPeriodicCreate(
+	task2,
+	"task2",
+	configMINIMAL_STACK_SIZE,
+	(void*) NULL,
+		1,
+	&task2_Handler,255);
 	
 
 	/* Now all the tasks have been started - start the scheduler.
