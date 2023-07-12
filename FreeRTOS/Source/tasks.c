@@ -2126,16 +2126,16 @@ BaseType_t xReturn;
 		}
 	}
 	#else
-	{
+	
 /***************************************EDF_Mowafey****************************************************/
 		#if (configUSE_EDF_SCHEDULER == 1)
 		{
 			/*Initializing the IDLE_task period to be the farest period/deadline*/
-			tickType initIDLEPeriod = INITIDLEPERIOD;
+			TickType_t initIDLEPeriod = INITIDLEPERIOD;
 			/*Create the idle task as a periodic task*/
-			xReturn = xTaskCreatePeriodic( 	prvIdleTask, 
+			xReturn = xTaskPeriodicCreate( 	prvIdleTask, 
 											configIDLE_TASK_NAME, 
-											tskIDLE_STACK_SIZE, 
+											configMINIMAL_STACK_SIZE,	 
 										   	(void * ) NULL,
 											portPRIVILEGE_BIT, 
 										   	&xIdleTaskHandle,
@@ -2149,8 +2149,9 @@ BaseType_t xReturn;
 								( void * ) NULL,
 								portPRIVILEGE_BIT, /* In effect ( tskIDLE_PRIORITY | portPRIVILEGE_BIT ), but tskIDLE_PRIORITY is zero. */
 								&xIdleTaskHandle ); /*lint !e961 MISRA exception, justified as it is not a redundant explicit cast to all supported compilers. */
+		#endif
 /***********************************END_EDF_Mowafey*****************************************************/	
-	}
+	
 	#endif /* configSUPPORT_STATIC_ALLOCATION */
 
 	#if ( configUSE_TIMERS == 1 )
