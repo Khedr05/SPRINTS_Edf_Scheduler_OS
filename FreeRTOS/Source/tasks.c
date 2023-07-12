@@ -3599,7 +3599,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 /*******************************************EDF_Mowafey*************************************************************************/
 		/*Update the deadline of the IDLE task to be the farest deadline */
 		#if(configUSE_EDF_SCHEDULER == 1 )
-			listSET_LIST_ITEM_VALUE( &( ( pxCurrentTCB )->xStateListItem ), ( pxCurrentTCB)->xTaskPeriod + currentTick);
+			listSET_LIST_ITEM_VALUE( &( ( pxCurrentTCB )->xStateListItem ), ( pxCurrentTCB)->xTaskPeriod + xTaskGetTickCount());
 		#endif
 /*******************************************END_EDF_Mowafey******************************************************************************/
 		#if ( ( configUSE_PREEMPTION == 1 ) && ( configIDLE_SHOULD_YIELD == 1 ) )
