@@ -211,6 +211,8 @@ count overflows. */
 
 /*-----------------------------------------------------------*/
 
+/*SHARPEL_EDF*/
+#if configUSE_EDF_SCHEDULER == 0
 /*
  * Place the task represented by pxTCB into the appropriate ready list for
  * the task.  It is inserted at the end of the list.
@@ -220,7 +222,10 @@ count overflows. */
 	taskRECORD_READY_PRIORITY( ( pxTCB )->uxPriority );												\
 	vListInsertEnd( &( pxReadyTasksLists[ ( pxTCB )->uxPriority ] ), &( ( pxTCB )->xStateListItem ) ); \
 	tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
-/*-----------------------------------------------------------*/
+#else
+#define prvAddTaskToReadyList( pxTCB )/*xGenericListIteam must contain thedeadline value */ \
+ vListInsert(&(xReadyTasksListEDF), &( ( pxTCB )->xStateListItem ))
+#endif
 
 /*
  * Several functions take an TaskHandle_t parameter that can optionally be NULL,
@@ -396,6 +401,13 @@ PRIVILEGED_DATA static volatile UBaseType_t uxSchedulerSuspended	= ( UBaseType_t
 	PRIVILEGED_DATA static uint32_t ulTotalRunTime = 0UL;		/*< Holds the total amount of execution time as defined by the run time counter clock. */
 
 #endif
+
+/*SHARPEL_EDF*/
+/* E.C. : the new RedyList */
+#if ( configUSE_EDF_SCHEDULER == 1 )
+PRIVILEGED_DATA static List_t xReadyTasksListEDF; /*< Ready tasks ordered by their deadline. */
+#endif
+
 
 /*lint -restore */
 
@@ -3606,12 +3618,17 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 
 static void prvInitialiseTaskLists( void )
 {
+/*SHARPEL_EDF*/
+ #if 	( configUSE_EDF_SCHEDULER == 1 )
+ vListInitialise( &xReadyTasksListEDF );
+ #else
 UBaseType_t uxPriority;
 
 	for( uxPriority = ( UBaseType_t ) 0U; uxPriority < ( UBaseType_t ) configMAX_PRIORITIES; uxPriority++ )
 	{
 		vListInitialise( &( pxReadyTasksLists[ uxPriority ] ) );
 	}
+#endif
 
 	vListInitialise( &xDelayedTaskList1 );
 	vListInitialise( &xDelayedTaskList2 );
