@@ -2127,14 +2127,29 @@ BaseType_t xReturn;
 	}
 	#else
 	{
-		
-		/* The Idle task is being created using dynamically allocated RAM. */
+/***************************************EDF_Mowafey****************************************************/
+		#if (configUSE_EDF_SCHEDULER == 1)
+		{
+			/*Initializing the IDLE_task period to be the farest period/deadline*/
+			tickType initIDLEPeriod = INITIDLEPERIOD;
+			/*Create the idle task as a periodic task*/
+			xReturn = xTaskCreatePeriodic( 	prvIdleTask, 
+											configIDLE_TASK_NAME, 
+											tskIDLE_STACK_SIZE, 
+										   	(void * ) NULL,
+											portPRIVILEGE_BIT, 
+										   	&xIdleTaskHandle,
+											initIDLEPeriod );
+		}	
+		#else
+		/* The Idle task is being created using dynamically allocated RAM. */							
 		xReturn = xTaskCreate(	prvIdleTask,
 								configIDLE_TASK_NAME,
 								configMINIMAL_STACK_SIZE,
 								( void * ) NULL,
 								portPRIVILEGE_BIT, /* In effect ( tskIDLE_PRIORITY | portPRIVILEGE_BIT ), but tskIDLE_PRIORITY is zero. */
 								&xIdleTaskHandle ); /*lint !e961 MISRA exception, justified as it is not a redundant explicit cast to all supported compilers. */
+/***********************************END_EDF_Mowafey*****************************************************/	
 	}
 	#endif /* configSUPPORT_STATIC_ALLOCATION */
 
