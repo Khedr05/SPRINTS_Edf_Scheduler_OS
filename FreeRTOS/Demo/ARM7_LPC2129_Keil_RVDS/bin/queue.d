@@ -13,4 +13,6 @@
 .\bin\queue.o: ..\..\Source\include\mpu_wrappers.h
 .\bin\queue.o: ..\..\Source\include\task.h
 .\bin\queue.o: ..\..\Source\include\list.h
+.\bin\queue.o: .\app.h
+.\bin\queue.o: ..\Starter_Files_V1\header\GPIO.h
 .\bin\queue.o: ..\..\Source\include\queue.h

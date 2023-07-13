@@ -22,39 +22,71 @@ Dialog DLL:      TARMP.DLL V1.53.0.0
  
 <h2>Project:</h2>
 D:\sprints\Rtos\SPRINTS_Edf_Scheduler_OS\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\RTOSDemo.uvproj
-Project File Date:  07/13/2023
+Project File Date:  07/14/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'RTOSDemo_THUMB'
 assembling serialISR.s...
-assembling Startup.s...
 compiling ParTest.c...
 compiling GPIO.c...
-..\Starter_Files_V1\source\GPIO.c(49): warning:  #127-D: expected a statement
-  		}
-..\Starter_Files_V1\source\GPIO.c: 1 warning, 0 errors
+assembling Startup.s...
 compiling GPIO_cfg.c...
 compiling serial.c...
 ..\Starter_Files_V1\source\serial.c(185): warning:  #550-D: variable "cChar"  was set but never used
   signed char cChar;
 ..\Starter_Files_V1\source\serial.c: 1 warning, 0 errors
 compiling main.c...
-..\Starter_Files_V1\source\main.c(231): warning:  #111-D: statement is unreachable
+..\Starter_Files_V1\source\main.c(136): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_write (PORT_0, IDLE_PIN, PIN_IS_HIGH);
+..\Starter_Files_V1\source\main.c(151): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+    vTaskSetApplicationTaskTag( NULL, ( void * ) BTN1_PIN );
+..\Starter_Files_V1\source\main.c(155): warning:  #188-D: enumerated type mixed with another type
+  		   GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
+..\Starter_Files_V1\source\main.c(184): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+    vTaskSetApplicationTaskTag( NULL, ( void * ) BTN2_PIN );
+..\Starter_Files_V1\source\main.c(188): warning:  #188-D: enumerated type mixed with another type
+  		   GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
+..\Starter_Files_V1\source\main.c(216): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+    vTaskSetApplicationTaskTag( NULL, ( void * ) UART_TRANSMITTER_PIN );
+..\Starter_Files_V1\source\main.c(220): warning:  #188-D: enumerated type mixed with another type
+  				  GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
+..\Starter_Files_V1\source\main.c(232): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+      vTaskSetApplicationTaskTag( NULL, ( void * ) RECIEVER_PIN );
+..\Starter_Files_V1\source\main.c(236): warning:  #188-D: enumerated type mixed with another type
+  				GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
+..\Starter_Files_V1\source\main.c(257): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+    vTaskSetApplicationTaskTag( NULL, ( void * ) T1_LOAD_PIN );
+..\Starter_Files_V1\source\main.c(261): warning:  #188-D: enumerated type mixed with another type
+  		GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
+..\Starter_Files_V1\source\main.c(270): warning:  #111-D: statement is unreachable
   	 vTaskDelete(Load_1_Task_Handler);
-..\Starter_Files_V1\source\main.c(257): warning:  #111-D: statement is unreachable
+..\Starter_Files_V1\source\main.c(285): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+    vTaskSetApplicationTaskTag( NULL, ( void * ) T2_LOAD_PIN );
+..\Starter_Files_V1\source\main.c(289): warning:  #188-D: enumerated type mixed with another type
+  		GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
+..\Starter_Files_V1\source\main.c(297): warning:  #111-D: statement is unreachable
   	 vTaskDelete(Load_2_Task_Handler);
-..\Starter_Files_V1\source\main.c: 2 warnings, 0 errors
+..\Starter_Files_V1\source\main.c: 15 warnings, 0 errors
 compiling list.c...
 compiling tasks.c...
-compiling port.c...
+..\..\Source\tasks.c(2243): warning:  #188-D: enumerated type mixed with another type
+  		traceTASK_SWITCHED_IN();
+..\..\Source\tasks.c(3202): warning:  #188-D: enumerated type mixed with another type
+  		traceTASK_SWITCHED_OUT();
+..\..\Source\tasks.c(3254): warning:  #188-D: enumerated type mixed with another type
+  		traceTASK_SWITCHED_IN();
+..\..\Source\tasks.c(3617): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+  	vTaskSetApplicationTaskTag( NULL, ( void * ) IDLE_PIN );
+..\..\Source\tasks.c: 4 warnings, 0 errors
 compiling queue.c...
-assembling portASM.s...
+compiling port.c...
 compiling heap_2.c...
+assembling portASM.s...
 linking...
-Program Size: Code=11484 RO-data=32 RW-data=212 ZI-data=15380  
+Program Size: Code=12152 RO-data=32 RW-data=284 ZI-data=15380  
 FromELF: creating hex file...
-".\bin\RTOSDemo.axf" - 0 Error(s), 4 Warning(s).
+".\bin\RTOSDemo.axf" - 0 Error(s), 20 Warning(s).
 Build Time Elapsed:  00:00:01
 </pre>
 </body>

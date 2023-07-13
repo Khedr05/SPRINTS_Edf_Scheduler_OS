@@ -13,8 +13,9 @@
 .\bin\main.o: ..\..\Source\include\mpu_wrappers.h
 .\bin\main.o: ..\..\Source\include\task.h
 .\bin\main.o: ..\..\Source\include\list.h
-.\bin\main.o: ..\Starter_Files_V1\header\serial.h
+.\bin\main.o: .\app.h
 .\bin\main.o: ..\Starter_Files_V1\header\GPIO.h
+.\bin\main.o: ..\Starter_Files_V1\header\serial.h
 .\bin\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
 .\bin\main.o: ..\..\Source\include\semphr.h
 .\bin\main.o: ..\..\Source\include\queue.h

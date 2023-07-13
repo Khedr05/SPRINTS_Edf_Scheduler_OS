@@ -12,3 +12,5 @@
 .\bin\port.o: ..\..\Source\include\mpu_wrappers.h
 .\bin\port.o: ..\..\Source\include\task.h
 .\bin\port.o: ..\..\Source\include\list.h
+.\bin\port.o: .\app.h
+.\bin\port.o: ..\Starter_Files_V1\header\GPIO.h

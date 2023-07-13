@@ -42,7 +42,6 @@ extern "C" {
 /*-----------------------------------------------------------
  * MACROS AND DEFINITIONS
  *----------------------------------------------------------*/
-
 #define tskKERNEL_VERSION_NUMBER "V10.3.0"
 #define tskKERNEL_VERSION_MAJOR 10
 #define tskKERNEL_VERSION_MINOR 3
@@ -55,6 +54,8 @@ extern "C" {
 #define tskMPU_REGION_EXECUTE_NEVER		( 1UL << 2UL )
 #define tskMPU_REGION_NORMAL_MEMORY		( 1UL << 3UL )
 #define tskMPU_REGION_DEVICE_MEMORY		( 1UL << 4UL )
+#include "app.h"
+
 
 /**
  * task. h

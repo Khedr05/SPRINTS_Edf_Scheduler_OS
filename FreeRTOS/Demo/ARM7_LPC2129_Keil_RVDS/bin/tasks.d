@@ -13,5 +13,7 @@
 .\bin\tasks.o: ..\..\Source\include\mpu_wrappers.h
 .\bin\tasks.o: ..\..\Source\include\task.h
 .\bin\tasks.o: ..\..\Source\include\list.h
+.\bin\tasks.o: .\app.h
+.\bin\tasks.o: ..\Starter_Files_V1\header\GPIO.h
 .\bin\tasks.o: ..\..\Source\include\timers.h
 .\bin\tasks.o: ..\..\Source\include\stack_macros.h

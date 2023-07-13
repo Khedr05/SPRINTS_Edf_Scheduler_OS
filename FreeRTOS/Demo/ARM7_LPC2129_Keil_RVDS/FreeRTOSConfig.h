@@ -82,8 +82,83 @@ to exclude the API function. */
 
 #define configUSE_MUTEXES           1
 
+
+
+
+
 /* Define the traceTASK_SWITCHED_IN() macro to output the voltage associated
 with the task being selected to run on port 0. */
-//#define traceTASK_SWITCHED_IN() vSetAnalogueOutput( 0, (int)pxCurrentTCB->pxTaskTag )
+#define traceTASK_SWITCHED_IN() {                                                                                 \
+                                    if(BTN1_PIN == (int) pxCurrentTCB->pxTaskTag)                                 \
+																		{                                                                             \
+																			u32_gl_BTN1_in_time = T1TC;                                                 \
+																		}                                                                             \
+																		else if (BTN2_PIN == (int) pxCurrentTCB->pxTaskTag)                           \
+																		{                                                                             \
+																			u32_gl_BTN2_in_time = T1TC;                                                 \
+																		}                                                                             \
+																		else if (UART_TRANSMITTER_PIN == (int) pxCurrentTCB->pxTaskTag)               \
+																		{                                                                      				\
+																			u32_gl_UART_TRANSMITTER_in_time = T1TC;                                     \
+																		}                                                                      				\
+																		else if (RECIEVER_PIN == (int) pxCurrentTCB->pxTaskTag)                       \
+																		{                                                                      				\
+																			u32_gl_RECIEVER_in_time = T1TC;                                             \
+																		}                                                                      				\
+																		else if (T1_LOAD_PIN == (int) pxCurrentTCB->pxTaskTag)                        \
+																		{                                                                      				\
+																			u32_gl_T1_LOAD_in_time = T1TC;                                              \
+																		}                                                                      				\
+	                                  else if (T2_LOAD_PIN == (int) pxCurrentTCB->pxTaskTag)                        \
+																		{                                                                      				\
+																			u32_gl_T2_LOAD_in_time = T1TC;                                              \
+																		}                                                                      				\
+																		else                                                                          \
+																		{                                                                             \
+																			                                                                            \
+																		}                                                                             \
+																		GPIO_write(PORT_0,(int) pxCurrentTCB->pxTaskTag,PIN_IS_HIGH);                 \
+																}										
+
+																
+																
+																
+#define traceTASK_SWITCHED_OUT() {                                                                                                               \
+                                    if(BTN1_PIN == (int) pxCurrentTCB->pxTaskTag)                                                                \
+																		{                                                                                                            \
+																			u32_gl_BTN1_out_time    = T1TC;                                                                            \
+																			u32_gl_BTN1_total_time += u32_gl_BTN1_out_time - u32_gl_BTN1_in_time;                                      \
+																		}                                                                                                            \
+																		else if (BTN2_PIN == (int) pxCurrentTCB->pxTaskTag)                                                          \
+																		{                                                                                                            \
+																			u32_gl_BTN2_out_time = T1TC;                                                                               \
+																			u32_gl_BTN2_total_time += u32_gl_BTN2_out_time - u32_gl_BTN2_in_time;                                      \
+																		}                                                                                                            \
+																		else if (UART_TRANSMITTER_PIN == (int) pxCurrentTCB->pxTaskTag)                                              \
+																		{                                                                      				                               \
+																			u32_gl_UART_TRANSMITTER_out_time = T1TC;                                                                   \
+																			u32_gl_UART_TRANSMITTER_total_time += u32_gl_UART_TRANSMITTER_out_time - u32_gl_UART_TRANSMITTER_in_time;  \
+																		}                                                                      				                               \
+																		else if (RECIEVER_PIN == (int) pxCurrentTCB->pxTaskTag)                                                      \
+																		{                                                                      				                               \
+																			u32_gl_RECIEVER_out_time     = T1TC;                                                                       \
+																			u32_gl_RECIEVER_total_time  += u32_gl_RECIEVER_out_time - u32_gl_RECIEVER_in_time;                         \
+																		}                                                                      				                               \
+																		else if (T1_LOAD_PIN == (int) pxCurrentTCB->pxTaskTag)                                                       \
+																		{                                                                      				                               \
+																			u32_gl_T1_LOAD_out_time = T1TC;                                                                            \
+																			u32_gl_T1_LOAD_total_time  += u32_gl_T1_LOAD_out_time - u32_gl_T1_LOAD_in_time;                            \
+																		}                                                                      				                               \
+	                                  else if (T2_LOAD_PIN == (int) pxCurrentTCB->pxTaskTag)                                                       \
+																		{                                                                      				                               \
+																			u32_gl_T2_LOAD_out_time = T1TC;                                                                            \
+																			u32_gl_T2_LOAD_total_time  += u32_gl_T2_LOAD_out_time - u32_gl_T2_LOAD_in_time;                            \
+																		}                                                                      				                               \
+																		else                                                                                                         \
+																		{                                                                                                            \
+																			                                                                                                           \
+																		}                                                                                                            \
+																		GPIO_write(PORT_0,(int) pxCurrentTCB->pxTaskTag,PIN_IS_LOW);                                                 \
+																}
 
 #endif /* FREERTOS_CONFIG_H */

@@ -13,4 +13,6 @@
 .\bin\serial.o: ..\..\Source\include\queue.h
 .\bin\serial.o: ..\..\Source\include\task.h
 .\bin\serial.o: ..\..\Source\include\list.h
+.\bin\serial.o: .\app.h
+.\bin\serial.o: ..\Starter_Files_V1\header\GPIO.h
 .\bin\serial.o: ..\Starter_Files_V1\header\serial.h

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 /* Scheduler includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -12,7 +13,6 @@
 /* Peripheral includes. */
 #include "serial.h"
 #include "GPIO.h"
-
 #include <limits.h>
 #include <semphr.h>
 #include <string.h>
@@ -24,11 +24,38 @@
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
 
+/*GLOBAL TASKS TIME VARIABLES*/
 
 
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
 /*-----------------------Macros------------------------------*/
+
+
+/* variables to store in time for tasks*/
+uint32_t u32_gl_BTN1_in_time                 = FALSE_VALUE;
+uint32_t u32_gl_BTN2_in_time                 = FALSE_VALUE;
+uint32_t u32_gl_UART_TRANSMITTER_in_time     = FALSE_VALUE;
+uint32_t u32_gl_RECIEVER_in_time             = FALSE_VALUE;
+uint32_t u32_gl_T1_LOAD_in_time              = FALSE_VALUE;
+uint32_t u32_gl_T2_LOAD_in_time              = FALSE_VALUE;
+
+/* variables to store out time for tasks*/
+uint32_t u32_gl_BTN1_out_time                 = FALSE_VALUE;
+uint32_t u32_gl_BTN2_out_time                 = FALSE_VALUE;
+uint32_t u32_gl_UART_TRANSMITTER_out_time     = FALSE_VALUE;
+uint32_t u32_gl_RECIEVER_out_time             = FALSE_VALUE;
+uint32_t u32_gl_T1_LOAD_out_time              = FALSE_VALUE;
+uint32_t u32_gl_T2_LOAD_out_time              = FALSE_VALUE;
+
+/* variables to store total time for tasks*/
+uint32_t u32_gl_BTN1_total_time               = FALSE_VALUE;
+uint32_t u32_gl_BTN2_total_time               = FALSE_VALUE;
+uint32_t u32_gl_UART_TRANSMITTER_total_time   = FALSE_VALUE;
+uint32_t u32_gl_RECIEVER_total_time           = FALSE_VALUE;
+uint32_t u32_gl_T1_LOAD_total_time            = FALSE_VALUE;
+uint32_t u32_gl_T2_LOAD_total_time            = FALSE_VALUE;
+
 
 /********************************************************/
  /**********  SHERIF_START *****************************/
@@ -106,7 +133,7 @@ QueueHandle_t xUARTQueue;
 
 void vApplicationIdleHook (void)
 {
-	GPIO_write (PORT_0, PIN4, PIN_IS_HIGH);
+	GPIO_write (PORT_0, IDLE_PIN, PIN_IS_HIGH);
 }
 
 /*-----------------------------------------------------------*/
@@ -120,9 +147,12 @@ void btnOneEdgeScanningTask(void * pvParameters)
 	pinState_t newState;
 	TickType_t xLastTimeOfRunning;
 	xLastTimeOfRunning = xTaskGetTickCount();
+	/* This task is going to be represented by a voltage scale of 1. */
+  vTaskSetApplicationTaskTag( NULL, ( void * ) BTN1_PIN );
 	for(;;)
 	{
-		   GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
+		   //IDLE LOW
+		   GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 	     newState = GPIO_read(PORT_0 , PIN0);
 			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
 			 {
@@ -150,9 +180,12 @@ void btnTwoEdgeScanningTask(void * pvParameters)
 	pinState_t newState;
 	TickType_t xLastTimeOfRunning;
 	xLastTimeOfRunning = xTaskGetTickCount();
+	/* This task is going to be represented by a voltage scale of 1. */
+  vTaskSetApplicationTaskTag( NULL, ( void * ) BTN2_PIN );
 	for(;;)
 	{
-		   GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
+		   // IDLE LOW
+		   GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 	     newState = GPIO_read(PORT_0 , PIN1);
 			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
 			 {
@@ -176,14 +209,17 @@ void btnTwoEdgeScanningTask(void * pvParameters)
 /**********  SHERIF_END *****************************/
 
 void Periodic_Transmitter(void *pvParameters) {
+	const char *UART_str = "\nahmed_atef";
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
+	/* This task is going to be represented by a voltage scale of 1. */
+  vTaskSetApplicationTaskTag( NULL, ( void * ) UART_TRANSMITTER_PIN );
     for(;;) 
 				{
-					const char *UART_str = "\nahmed_atef";
+					//idle_low
+				  GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 					xQueueSend(xUARTQueue, &UART_str, portMAX_DELAY);
 					vTaskDelayUntil(&xLastWakeTime,PERIODIC_TASK_PERIOD);
-					GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
 				}
 }
 
@@ -192,14 +228,18 @@ void Uart_Receiver(void *pvParameters) {
     const char *UART_str;
 		TickType_t xLastWakeTime;
 		xLastWakeTime = xTaskGetTickCount();
+	 /* This task is going to be represented by a voltage scale of 1. */
+    vTaskSetApplicationTaskTag( NULL, ( void * ) RECIEVER_PIN );
     for(;;) 
 			{
+				//idle_low
+				GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 				if (xQueueReceive(xUARTQueue, &UART_str, portMAX_DELAY))  
 				{
 						vSerialPutString ((const signed char*)UART_str, strlen(UART_str));
 				}
 				vTaskDelayUntil(&xLastWakeTime,UART_RECEIVER_PERIOD);
-				GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
+				
 			}
 }
 
@@ -213,18 +253,17 @@ void Load_1_Task(void * pvParameters)
 	const TickType_t xFrequency = LOAD_5_FREQ;
   // Initialise the xLastWakeTime variable with the current time.
   xLastWakeTime = xTaskGetTickCount ();
+	/* This task is going to be represented by a voltage scale of 1. */
+  vTaskSetApplicationTaskTag( NULL, ( void * ) T1_LOAD_PIN );
  for(;;)
 	{
-		//xLastWakeTime = xTaskGetTickCount ();
-		GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
-		GPIO_write (PORT_0, PIN5, PIN_IS_HIGH);
+		//idle_low
+		GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 		for(loopCounter = pdFALSE; loopCounter <= LOAD_5_MILLISECOND; loopCounter++)
 		{
 			//Do nothing
 			//loopCounter = loopCounter;
 		}
-		GPIO_write (PORT_0, PIN5, PIN_IS_LOW);
-		//GPIO_toggle(PORT_0,PIN5);
 		/*Provide a delay to give the cpu access*/		
 		vTaskDelayUntil( &xLastWakeTime, xFrequency );		
 	 }		
@@ -242,15 +281,16 @@ void Load_2_Task(void * pvParameters)
 	const TickType_t xFrequency = LOAD_12_FREQ;
   // Initialise the xLastWakeTime variable with the current time.
   xLastWakeTime = xTaskGetTickCount ();
+	/* This task is going to be represented by a voltage scale of 1. */
+  vTaskSetApplicationTaskTag( NULL, ( void * ) T2_LOAD_PIN );
  for(;;)
 	{
-		GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
-		GPIO_write (PORT_0, PIN6, PIN_IS_HIGH);
+		//idle_low
+		GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 		for(loopCounter = pdFALSE; loopCounter <= LOAD_12_MILLISECOND; loopCounter++)
 		{
 			//Do nothing
 		}
-		GPIO_write (PORT_0, PIN6, PIN_IS_LOW);
 		/*Provide a delay to give the cpu access*/		
 		vTaskDelayUntil( &xLastWakeTime, xFrequency );		
 	 }		
@@ -282,7 +322,7 @@ int main( void )
 			(void*) NULL,
 				T1_TASK_PRIORITY,
 			&btnOneEdgeScanningTask_Handler,
-			T1_Deadline_TIME
+			T1_Periodicity_TIME
 	);
   /***************** Create Task 2 ****************/			
 		xTaskPeriodicCreate
@@ -293,7 +333,7 @@ int main( void )
 			(void*) NULL,
 			T2_TASK_PRIORITY,
 			&btnTwoEdgeScanningTask_Handler,
-			T2_Deadline_TIME
+			T2_Periodicity_TIME
 	);		
 
 	/**************** SHERIF END *************************/								 
