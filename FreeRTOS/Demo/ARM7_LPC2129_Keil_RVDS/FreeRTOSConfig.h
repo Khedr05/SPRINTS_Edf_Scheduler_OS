@@ -59,6 +59,7 @@
 #define configUSE_16_BIT_TICKS		0
 #define configIDLE_SHOULD_YIELD		1
 #define configUSE_EDF_SCHEDULER   1
+#define configUSE_APPLICATION_TASK_TAG 1
 
 #define configQUEUE_REGISTRY_SIZE 	0
 
@@ -80,5 +81,9 @@ to exclude the API function. */
 
 
 #define configUSE_MUTEXES           1
+
+/* Define the traceTASK_SWITCHED_IN() macro to output the voltage associated
+with the task being selected to run on port 0. */
+//#define traceTASK_SWITCHED_IN() vSetAnalogueOutput( 0, (int)pxCurrentTCB->pxTaskTag )
 
 #endif /* FREERTOS_CONFIG_H */

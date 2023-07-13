@@ -68,13 +68,13 @@ static void prvSetupHardware( void );
 #define LOAD_1_TASK_PERIOD				   		10
 					/** Load_1_Task6 **********************************/
 #define LOAD_2_TASK_PRIORITY						1
-#define LOAD_2_TASK_PERIOD				   		12
+#define LOAD_2_TASK_PERIOD				   		100
 
 					/**************************************************/
 #define LOAD_5_MILLISECOND							37723
-#define LOAD_12_MILLISECOND							89667
-#define LOAD_5_FREQ										  5
-#define LOAD_12_FREQ										12					
+#define LOAD_12_MILLISECOND							90535
+#define LOAD_5_FREQ										  10
+#define LOAD_12_FREQ										100					
 /********************** END_Mowafey ****************************/
 
 /*-----------------Task Handlers------------------------------*/
@@ -122,6 +122,7 @@ void btnOneEdgeScanningTask(void * pvParameters)
 	xLastTimeOfRunning = xTaskGetTickCount();
 	for(;;)
 	{
+		   GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
 	     newState = GPIO_read(PORT_0 , PIN0);
 			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
 			 {
@@ -139,7 +140,7 @@ void btnOneEdgeScanningTask(void * pvParameters)
 			 }
 			preState = newState; 
 		  vTaskDelayUntil(&xLastTimeOfRunning,T1_Periodicity_TIME);
-		  GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
+		 
 	}	
 }
 /*********************** TASK 2 IMPLEMANTATION ***********************/
@@ -151,6 +152,7 @@ void btnTwoEdgeScanningTask(void * pvParameters)
 	xLastTimeOfRunning = xTaskGetTickCount();
 	for(;;)
 	{
+		   GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
 	     newState = GPIO_read(PORT_0 , PIN1);
 			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
 			 {
@@ -167,8 +169,7 @@ void btnTwoEdgeScanningTask(void * pvParameters)
 				 /* Do Nothing */
 			 }
 			preState = newState; 
-		  vTaskDelayUntil(&xLastTimeOfRunning,T1_Periodicity_TIME);		
-      GPIO_write (PORT_0, PIN4, PIN_IS_LOW);			 
+		  vTaskDelayUntil(&xLastTimeOfRunning,T1_Periodicity_TIME);					 
 	}	
 }
  
@@ -214,19 +215,22 @@ void Load_1_Task(void * pvParameters)
   xLastWakeTime = xTaskGetTickCount ();
  for(;;)
 	{
-		xLastWakeTime = xTaskGetTickCount ();
-		GPIO_toggle(PORT_0,PIN5);
+		//xLastWakeTime = xTaskGetTickCount ();
+		GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
+		GPIO_write (PORT_0, PIN5, PIN_IS_HIGH);
 		for(loopCounter = pdFALSE; loopCounter <= LOAD_5_MILLISECOND; loopCounter++)
 		{
 			//Do nothing
+			//loopCounter = loopCounter;
 		}
-		xLastWakeTime = xTaskGetTickCount ();
-		GPIO_toggle(PORT_0,PIN1);
+		GPIO_write (PORT_0, PIN5, PIN_IS_LOW);
+		//GPIO_toggle(PORT_0,PIN5);
 		/*Provide a delay to give the cpu access*/		
 		vTaskDelayUntil( &xLastWakeTime, xFrequency );		
 	 }		
 	 vTaskDelete(Load_1_Task_Handler);
 }
+
 
 
 /*  Load_2_Task to be created */
@@ -240,14 +244,13 @@ void Load_2_Task(void * pvParameters)
   xLastWakeTime = xTaskGetTickCount ();
  for(;;)
 	{
-		xLastWakeTime = xTaskGetTickCount ();
-		GPIO_toggle(PORT_0,PIN6);
+		GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
+		GPIO_write (PORT_0, PIN6, PIN_IS_HIGH);
 		for(loopCounter = pdFALSE; loopCounter <= LOAD_12_MILLISECOND; loopCounter++)
 		{
 			//Do nothing
 		}
-		xLastWakeTime = xTaskGetTickCount ();
-		GPIO_toggle(PORT_0,PIN1);
+		GPIO_write (PORT_0, PIN6, PIN_IS_LOW);
 		/*Provide a delay to give the cpu access*/		
 		vTaskDelayUntil( &xLastWakeTime, xFrequency );		
 	 }		
