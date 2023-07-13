@@ -69,6 +69,7 @@ static void prvSetupHardware( void );
 					/** Load_1_Task6 **********************************/
 #define LOAD_2_TASK_PRIORITY						1
 #define LOAD_2_TASK_PERIOD				   		12
+
 					/**************************************************/
 #define LOAD_5_MILLISECOND							37723
 #define LOAD_12_MILLISECOND							89667
@@ -202,19 +203,19 @@ void Uart_Receiver(void *pvParameters) {
 }
 
 /*************** Mowafey ********************************************/
-/*  Task to be created */
+/*  Load_1_Task to be created */
 void Load_1_Task(void * pvParameters)
 {
 	
 	uint32_t loopCounter = pdFALSE;
 	TickType_t xLastWakeTime;
-	const TickType_t xFrequency = LOAD_12_FREQ;
+	const TickType_t xFrequency = LOAD_5_FREQ;
   // Initialise the xLastWakeTime variable with the current time.
   xLastWakeTime = xTaskGetTickCount ();
  for(;;)
 	{
 		xLastWakeTime = xTaskGetTickCount ();
-		GPIO_toggle(PORT_0,PIN1);
+		GPIO_toggle(PORT_0,PIN5);
 		for(loopCounter = pdFALSE; loopCounter <= LOAD_5_MILLISECOND; loopCounter++)
 		{
 			//Do nothing
@@ -225,6 +226,32 @@ void Load_1_Task(void * pvParameters)
 		vTaskDelayUntil( &xLastWakeTime, xFrequency );		
 	 }		
 	 vTaskDelete(Load_1_Task_Handler);
+}
+
+
+/*  Load_2_Task to be created */
+void Load_2_Task(void * pvParameters)
+{
+	
+	uint32_t loopCounter = pdFALSE;
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = LOAD_12_FREQ;
+  // Initialise the xLastWakeTime variable with the current time.
+  xLastWakeTime = xTaskGetTickCount ();
+ for(;;)
+	{
+		xLastWakeTime = xTaskGetTickCount ();
+		GPIO_toggle(PORT_0,PIN6);
+		for(loopCounter = pdFALSE; loopCounter <= LOAD_12_MILLISECOND; loopCounter++)
+		{
+			//Do nothing
+		}
+		xLastWakeTime = xTaskGetTickCount ();
+		GPIO_toggle(PORT_0,PIN1);
+		/*Provide a delay to give the cpu access*/		
+		vTaskDelayUntil( &xLastWakeTime, xFrequency );		
+	 }		
+	 vTaskDelete(Load_2_Task_Handler);
 }
 /*************** END_Mowafey*****************************************/
 
@@ -295,8 +322,17 @@ int main( void )
 									configMINIMAL_STACK_SIZE,
 									(void *) 1,
 									LOAD_1_TASK_PRIORITY,												
-									&Load_1_Task_Handler
+									&Load_1_Task_Handler,
 									LOAD_1_TASK_PERIOD	);
+									
+		xTaskPeriodicCreate( 
+									Load_2_Task,
+									"Load_2_Task",
+									configMINIMAL_STACK_SIZE,
+									(void *) 1,
+									LOAD_2_TASK_PRIORITY,												
+									&Load_2_Task_Handler,
+									LOAD_2_TASK_PERIOD	);
 /************ END_Mowafey********************************/												 
 
 	/* Now all the tasks have been started - start the scheduler.
