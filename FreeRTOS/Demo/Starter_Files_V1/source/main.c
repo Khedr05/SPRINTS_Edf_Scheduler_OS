@@ -60,7 +60,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "lpc21xx.h"
-
+#include "semphr.h"
 /* Peripheral includes. */
 #include "serial.h"
 #include "GPIO.h"
@@ -156,11 +156,30 @@ void UART_Task1 (void *pvParameter)
  * Application entry point:
  * Starts all the other tasks, then starts the scheduler. 
  */
+ TaskHandle_t Periodic_Transmitter_Handler = NULL;
+TaskHandle_t Uart_Receiver_Handler        = NULL;
+ void Uart_Receiver_task( void * pvParameters ) ; //consumer task
+ void Periodic_Transmitter_task( void * pvParameters );
+ 
+ /*************************TASK3*************************/
+#define PT_TASK_PRIORITY 								    2
+#define PT_TASK_STACK_SIZE         			    100
+#define PT_TASK_NAME				       			    "Periodic_Transmitter"
+/*************************TASK4*************************/
+#define Uart_TASK_PRIORITY    						  3
+#define Uart_TASK_STACK_SIZE  						  100
+#define Uart_TASK_NAME										  "Uart_Receiver"
+/* create a Queue */
+
+#define   QueueLength      10
+#define    ItemSize        20 * sizeof( unsigned char )
+QueueHandle_t xUARTQueue;
+
 int main( void )
 {
 	/* Setup the hardware for use with the Keil demo board. */
 	prvSetupHardware();
-
+xUARTQueue = xQueueCreate( QueueLength, ItemSize  );
 	
     /* Create Tasks here */
 xTaskPeriodicCreate(
@@ -178,7 +197,8 @@ xTaskPeriodicCreate(
 		1,
 	&task2_Handler,255);
 	
-
+	xTaskPeriodicCreate(Uart_Receiver_task,       Uart_TASK_NAME, Uart_TASK_STACK_SIZE, NULL, Uart_TASK_PRIORITY, &Uart_Receiver_Handler,20 );
+	xTaskPeriodicCreate(Periodic_Transmitter_task,PT_TASK_NAME,   PT_TASK_STACK_SIZE,   NULL, PT_TASK_PRIORITY,   &Periodic_Transmitter_Handler,100 );
 	/* Now all the tasks have been started - start the scheduler.
 
 	NOTE : Tasks run in system mode and the scheduler runs in Supervisor mode.
@@ -226,5 +246,32 @@ static void prvSetupHardware( void )
 	VPBDIV = mainBUS_CLK_FULL;
 }
 /*-----------------------------------------------------------*/
+void Uart_Receiver_task( void * pvParameters )  //consumer task
+{  
+	
+	   uint8_t UART_str[12];
+			TickType_t Task2LastWakeTime;                   /* Local variable to save the last wake time of the task2. */
+	Task2LastWakeTime =xTaskGetTickCount(); 
+	
+		
+	
+    for( ;; )
+    {
+				xQueueReceive(xUARTQueue, UART_str, portMAX_DELAY);
+			  vSerialPutString((const signed char * const)UART_str, 12);
+				vTaskDelayUntil(&Task2LastWakeTime, 20 );
+				xSerialPutChar('\n');
+		}
+}
 
+void Periodic_Transmitter_task( void * pvParameters )
+{ 
+		TickType_t Task2LastWakeTime;                   /* Local variable to save the last wake time of the task2. */
+	Task2LastWakeTime =xTaskGetTickCount(); 
+    for( ;; )
+    {
+				xQueueSend( xUARTQueue, ( unsigned char * )"PeriodicString" , portMAX_DELAY );
+				vTaskDelayUntil(&Task2LastWakeTime, 100 );
+		}
+}
 
