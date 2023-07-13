@@ -30,7 +30,28 @@ static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
 /*-----------------------Macros------------------------------*/
 
- /*************************TASK3*************************/
+/********************************************************/
+ /**********  SHERIF_START *****************************/
+ 
+/*********** TASK 1 **********************************/
+ 
+ #define T1_TASK_PRIORITY         1
+ #define T1_TASK_STACK_SIZE       250
+ #define T1_TASK_NAME							"btnOneEdgeScanningTask"
+ #define T1_Deadline_TIME					50
+ #define T1_Periodicity_TIME      50
+ 
+/*********** TASK 2 **********************************/
+ 
+ #define T2_TASK_PRIORITY         1
+ #define T2_TASK_STACK_SIZE       250
+ #define T2_TASK_NAME							"btnTwoEdgeScanningTask"
+ #define T2_Deadline_TIME					50
+ #define T2_Periodicity_TIME      50
+ 
+/******************** SHERIF_END ****************************/
+
+/*************************TASK3*************************/
 #define PT_TASK_PRIORITY 								    1
 #define PT_TASK_STACK_SIZE         			    100
 #define PT_TASK_NAME				       			    "Periodic_Transmitter"
@@ -49,7 +70,12 @@ static void prvSetupHardware( void );
 TaskHandle_t PeriodicTransmitterHandler = NULL;
 TaskHandle_t UartReceiverHandler 				= NULL;
 
+ /**********  SHERIF_START *****************************/
+ 
+TaskHandle_t btnOneEdgeScanningTask_Handler = NULL;
+TaskHandle_t btnTwoEdgeScanningTask_Handler = NULL;
 
+/**********  SHERIF_END *****************************/
 
 /*-----------------Queue Handler-------------------------------*/
 QueueHandle_t xUARTQueue;
@@ -66,6 +92,63 @@ void vApplicationIdleHook (void)
 
 /*-----------------------------------------------------------*/
 
+/**********  SHERIF_START *****************************/
+/******************** TASK 1 IMPLEMNTATION *************************/
+
+void btnOneEdgeScanningTask(void * pvParameters)
+{
+	pinState_t preState = PIN_IS_LOW;
+	pinState_t newState;
+	TickType_t xLastTimeOfRunning;
+	xLastTimeOfRunning = xTaskGetTickCount();
+	for(;;)
+	{
+	     newState = GPIO_read(PORT_0 , PIN0);
+			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
+			 {
+					 xQueueSend( xUARTQueue, ( unsigned char * )"BTN1 Sending Falling Edge" , portMAX_DELAY);
+			 }
+			 else if((preState == PIN_IS_LOW) && (newState == PIN_IS_HIGH))
+			 {
+					 xQueueSend( xUARTQueue, ( unsigned char * )"BTN1 Sending Rising Edge" , portMAX_DELAY);
+			 }
+			 else
+			 {
+				 /* Do Nothing */
+			 }
+			preState = newState; 
+		  vTaskDelayUntil(&xLastTimeOfRunning,T1_Periodicity_TIME);
+		 
+	}	
+}
+/*********************** TASK 2 IMPLEMANTATION ***********************/
+void btnTwoEdgeScanningTask(void * pvParameters)
+{
+	pinState_t preState = PIN_IS_LOW;
+	pinState_t newState;
+	TickType_t xLastTimeOfRunning;
+	xLastTimeOfRunning = xTaskGetTickCount();
+	for(;;)
+	{
+	     newState = GPIO_read(PORT_0 , PIN1);
+			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
+			 {
+					 xQueueSend( xUARTQueue, ( unsigned char * )"BTN2 Sending Falling Edge" , portMAX_DELAY);
+			 }
+			 else if((preState == PIN_IS_LOW) && (newState == PIN_IS_HIGH))
+			 {
+					 xQueueSend( xUARTQueue, ( unsigned char * )"BTN2 Sending Rising Edge" , portMAX_DELAY);
+			 }
+			 else
+			 {
+				 /* Do Nothing */
+			 }
+			preState = newState; 
+		  vTaskDelayUntil(&xLastTimeOfRunning,T1_Periodicity_TIME);		 	 
+	}	
+}
+ 
+/**********  SHERIF_END *****************************/
 
 void Periodic_Transmitter(void *pvParameters) {
 	TickType_t xLastWakeTime;
@@ -108,12 +191,36 @@ int main( void )
 
 	xUARTQueue = xQueueCreate(QueueLength, ItemSize);
 
-    /* Create Tasks here */
+    /* Create Tasks here */	
+	
+	/****************** SHERIF START ****************************/
+	/***************** Create Task 1 ****************/
+	xTaskPeriodicCreate
+	(
+			btnOneEdgeScanningTask,
+			T1_TASK_NAME,
+			T1_TASK_STACK_SIZE,
+			(void*) NULL,
+				T1_TASK_PRIORITY,
+			&btnOneEdgeScanningTask_Handler,
+			T1_Deadline_TIME
+	);
+  /***************** Create Task 2 ****************/			
+		xTaskPeriodicCreate
+	(
+			btnTwoEdgeScanningTask,
+			T2_TASK_NAME,
+			T2_TASK_STACK_SIZE,
+			(void*) NULL,
+			T2_TASK_PRIORITY,
+			&btnTwoEdgeScanningTask_Handler,
+			T2_Deadline_TIME
+	);		
 
-
-								 
-								 
-								 
+	/**************** SHERIF END *************************/								 
+	
+	
+	
 		xTaskPeriodicCreate( Periodic_Transmitter,
 												 PT_TASK_NAME,
 												 configMINIMAL_STACK_SIZE,
