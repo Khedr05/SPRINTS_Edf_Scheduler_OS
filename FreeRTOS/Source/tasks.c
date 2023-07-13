@@ -228,8 +228,14 @@ count overflows. */
 /*xGenericListIteam must contain thedeadline value */
 #define prvAddTaskToReadyList( pxTCB )  \
   /*ADDED V2 IDLE update */                                                                       \
+  traceMOVED_TASK_TO_READY_STATE( pxTCB );														                       \
+  if(listGET_LIST_ITEM_VALUE( &( xIdleTaskHandle->xStateListItem ) ) <= listGET_LIST_ITEM_VALUE( &( ( pxTCB )->xStateListItem ) )) \
+ {                                                                                                                                 \
+	 listSET_LIST_ITEM_VALUE( &( ( xIdleTaskHandle->xStateListItem ) ), ( pxTCB)->xTaskPeriod +IDLE_OFFSET);                       \
+ }                                                                                                                                   \
   vListInsert(&(xReadyTasksListEDF), &( ( pxTCB )->xStateListItem ))  \
-//  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
+ // tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )                                                                                                                                                                                                                                                               
+//  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB ) 
 #endif
 
 /*
@@ -2158,7 +2164,7 @@ BaseType_t xReturn;
 		#if (configUSE_EDF_SCHEDULER == 1)
 		{
 			/*Initializing the IDLE_task period to be the farest period/deadline*/
-			TickType_t initIDLEPeriod = INITIDLEPERIOD;
+			TickType_t initIDLEPeriod = 200;
 			/*Create the idle task as a periodic task*/
 			xReturn = xTaskPeriodicCreate( 	prvIdleTask, 
 											configIDLE_TASK_NAME, 
