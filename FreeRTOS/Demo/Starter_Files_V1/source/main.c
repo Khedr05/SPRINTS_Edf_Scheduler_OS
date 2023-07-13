@@ -106,11 +106,13 @@ void btnOneEdgeScanningTask(void * pvParameters)
 	     newState = GPIO_read(PORT_0 , PIN0);
 			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
 			 {
-					 xQueueSend( xUARTQueue, ( unsigned char * )"BTN1 Sending Falling Edge" , portMAX_DELAY);
+				   const char *UART_str = "\nBTN1 Sending Falling Edge";
+					 xQueueSend( xUARTQueue,&UART_str, portMAX_DELAY);
 			 }
 			 else if((preState == PIN_IS_LOW) && (newState == PIN_IS_HIGH))
 			 {
-					 xQueueSend( xUARTQueue, ( unsigned char * )"BTN1 Sending Rising Edge" , portMAX_DELAY);
+				   const char *UART_str = "\nBTN1 Sending Rising Edge";
+					 xQueueSend( xUARTQueue,&UART_str, portMAX_DELAY);
 			 }
 			 else
 			 {
@@ -118,7 +120,7 @@ void btnOneEdgeScanningTask(void * pvParameters)
 			 }
 			preState = newState; 
 		  vTaskDelayUntil(&xLastTimeOfRunning,T1_Periodicity_TIME);
-		 
+		  GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
 	}	
 }
 /*********************** TASK 2 IMPLEMANTATION ***********************/
@@ -133,18 +135,21 @@ void btnTwoEdgeScanningTask(void * pvParameters)
 	     newState = GPIO_read(PORT_0 , PIN1);
 			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
 			 {
-					 xQueueSend( xUARTQueue, ( unsigned char * )"BTN2 Sending Falling Edge" , portMAX_DELAY);
+				   const char *UART_str = "\nBTN2 Sending Falling Edge";
+					 xQueueSend( xUARTQueue,&UART_str, portMAX_DELAY);
 			 }
 			 else if((preState == PIN_IS_LOW) && (newState == PIN_IS_HIGH))
 			 {
-					 xQueueSend( xUARTQueue, ( unsigned char * )"BTN2 Sending Rising Edge" , portMAX_DELAY);
+				   const char *UART_str = "\nBTN2 Sending Rising Edge";
+					 xQueueSend( xUARTQueue,&UART_str, portMAX_DELAY);
 			 }
 			 else
 			 {
 				 /* Do Nothing */
 			 }
 			preState = newState; 
-		  vTaskDelayUntil(&xLastTimeOfRunning,T1_Periodicity_TIME);		 	 
+		  vTaskDelayUntil(&xLastTimeOfRunning,T1_Periodicity_TIME);		
+      GPIO_write (PORT_0, PIN4, PIN_IS_LOW);			 
 	}	
 }
  
@@ -155,7 +160,7 @@ void Periodic_Transmitter(void *pvParameters) {
 	xLastWakeTime = xTaskGetTickCount();
     for(;;) 
 				{
-					const char *UART_str = "ahmed_atef";
+					const char *UART_str = "\nahmed_atef";
 					xQueueSend(xUARTQueue, &UART_str, portMAX_DELAY);
 					vTaskDelayUntil(&xLastWakeTime,PERIODIC_TASK_PERIOD);
 					GPIO_write (PORT_0, PIN4, PIN_IS_LOW);
