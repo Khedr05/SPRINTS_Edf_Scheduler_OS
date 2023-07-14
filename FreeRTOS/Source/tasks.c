@@ -2241,7 +2241,7 @@ BaseType_t xReturn;
 		FreeRTOSConfig.h file. */
 		portCONFIGURE_TIMER_FOR_RUN_TIME_STATS();
 
-		traceTASK_SWITCHED_IN();
+    traceTASK_SWITCHED_IN();
 
 		/* Setting up the timer tick is hardware specific and thus in the
 		portable interface. */
@@ -3615,7 +3615,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 	the idle task is responsible for deleting the task's secure context, if
 	any. */
 	portALLOCATE_SECURE_CONTEXT( configMINIMAL_SECURE_STACK_SIZE );
-	vTaskSetApplicationTaskTag( NULL, ( void * ) IDLE_PIN );
+	vTaskSetApplicationTaskTag( NULL, ( TaskHookFunction_t) IDLE_PIN );
 
 	for( ;; )
 	{

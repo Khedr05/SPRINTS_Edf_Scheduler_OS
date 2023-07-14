@@ -136,11 +136,6 @@ QueueHandle_t xUARTQueue;
 
 /*-----------------Tasks implementation------------------------*/
 
-//void vApplicationIdleHook (void)
-//{
-//	GPIO_write (PORT_0, IDLE_PIN, PIN_IS_HIGH);
-//}
-
 /*-----------------------------------------------------------*/
 void vApplicationTickHook( void );
 
@@ -163,8 +158,6 @@ void btnOneEdgeScanningTask(void * pvParameters)
   
 	for(;;)
 	{
-		   //IDLE LOW
-		   //GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 	     newState = GPIO_read(PORT_0 , PIN0);
 			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
 			 {
@@ -195,8 +188,6 @@ void btnTwoEdgeScanningTask(void * pvParameters)
 	/* This task is going to be represented by a voltage scale of 1. */
 	for(;;)
 	{
-		   // IDLE LOW
-		   //GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 	     newState = GPIO_read(PORT_0 , PIN1);
 			 if((preState == PIN_IS_HIGH) && (newState == PIN_IS_LOW))
 			 {
@@ -224,11 +215,9 @@ void Periodic_Transmitter(void *pvParameters) {
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 	/* This task is going to be represented by a voltage scale of 1. */
-  vTaskSetApplicationTaskTag( NULL, ( void * ) UART_TRANSMITTER_PIN );
+  vTaskSetApplicationTaskTag( NULL, ( TaskHookFunction_t) UART_TRANSMITTER_PIN );
     for(;;) 
 				{
-					//idle_low
-				  //GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 					xQueueSend(xUARTQueue, &UART_str, portMAX_DELAY);
 					vTaskDelayUntil(&xLastWakeTime,PERIODIC_TASK_PERIOD);
 				}
@@ -243,8 +232,6 @@ void Uart_Receiver(void *pvParameters) {
    
     for(;;) 
 			{
-				//idle_low
-				//GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 				if (xQueueReceive(xUARTQueue, &UART_str, 0))  
 				{
 						vSerialPutString ((const signed char*)UART_str, strlen(UART_str));
@@ -268,17 +255,13 @@ void Load_1_Task(void * pvParameters)
 
  for(;;)
 	{
-		//idle_low
-		//GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 		for(loopCounter = pdFALSE; loopCounter <= LOAD_5_MILLISECOND; loopCounter++)
 		{
 			//Do nothing
-			//loopCounter = loopCounter;
 		}
 		/*Provide a delay to give the cpu access*/		
 		vTaskDelayUntil( &xLastWakeTime, xFrequency );		
 	 }		
-	 vTaskDelete(Load_1_Task_Handler);
 }
 
 
@@ -296,8 +279,6 @@ void Load_2_Task(void * pvParameters)
 
  for(;;)
 	{
-		//idle_low
-		//GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
 		for(loopCounter = pdFALSE; loopCounter <= LOAD_12_MILLISECOND; loopCounter++)
 		{
 			//Do nothing
@@ -305,7 +286,6 @@ void Load_2_Task(void * pvParameters)
 		/*Provide a delay to give the cpu access*/		
 		vTaskDelayUntil( &xLastWakeTime, xFrequency );		
 	 }		
-	 vTaskDelete(Load_2_Task_Handler);
 }
 /*************** END_Mowafey*****************************************/
 
@@ -388,12 +368,12 @@ int main( void )
 									&Load_2_Task_Handler,
 									LOAD_2_TASK_PERIOD	);
 /************ END_Mowafey********************************/												 
-    vTaskSetApplicationTaskTag( PeriodicTransmitterHandler, ( void * ) UART_TRANSMITTER_PIN );
-	  vTaskSetApplicationTaskTag( btnTwoEdgeScanningTask_Handler, ( void * ) BTN2_PIN );
-	  vTaskSetApplicationTaskTag( btnOneEdgeScanningTask_Handler, ( void * ) BTN1_PIN );
-		vTaskSetApplicationTaskTag( UartReceiverHandler, ( void * ) RECIEVER_PIN );
-		vTaskSetApplicationTaskTag( Load_1_Task_Handler, ( void * ) T1_LOAD_PIN );
-		vTaskSetApplicationTaskTag( Load_2_Task_Handler, ( void * ) T2_LOAD_PIN );
+    vTaskSetApplicationTaskTag( PeriodicTransmitterHandler, ( TaskHookFunction_t) UART_TRANSMITTER_PIN );
+	  vTaskSetApplicationTaskTag( btnTwoEdgeScanningTask_Handler, ( TaskHookFunction_t) BTN2_PIN );
+	  vTaskSetApplicationTaskTag( btnOneEdgeScanningTask_Handler, ( TaskHookFunction_t) BTN1_PIN );
+		vTaskSetApplicationTaskTag( UartReceiverHandler, ( TaskHookFunction_t) RECIEVER_PIN );
+		vTaskSetApplicationTaskTag( Load_1_Task_Handler, ( TaskHookFunction_t) T1_LOAD_PIN );
+		vTaskSetApplicationTaskTag( Load_2_Task_Handler, ( TaskHookFunction_t) T2_LOAD_PIN );
 
 	/* Now all the tasks have been started - start the scheduler.
 
