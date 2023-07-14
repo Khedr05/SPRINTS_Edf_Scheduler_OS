@@ -32,7 +32,7 @@
     [Google Sheets]()
     [PDF]()
 > - `Video & Simulation_Test`
-    [Videos]()
+    [Videos](https://github.com/sherifkhadr/SPRINTS_Edf_Scheduler_OS/tree/delivery_branch/01_Videos)
 > - ---
 
 
