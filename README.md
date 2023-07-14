@@ -79,7 +79,9 @@
         When you are Verifying the system implementation, use FreeRTOS run-time stats function "uxTaskGetSystemState", and print the stats summary of all tasks
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Environment used
-> - 
+> - Keil
+> - FreeRTOS
+> - SimSo
 
 
 
