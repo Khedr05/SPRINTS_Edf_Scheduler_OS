@@ -171,7 +171,7 @@ with the task being selected to run on port 0. */
 																		}                                                                                                            \
 																		GPIO_write(PORT_0,(int) pxCurrentTCB->pxTaskTag,PIN_IS_LOW);                                                 \
 																		TotalSystemTime = T1TC; \
-									                  CPULoad = (u32_gl_BTN1_total_time + u32_gl_BTN2_total_time +u32_gl_UART_TRANSMITTER_total_time +u32_gl_RECIEVER_total_time+u32_gl_T1_LOAD_total_time+u32_gl_T2_LOAD_total_time)/(float)TotalSystemTime; \
+									                  CPULoad = ((u32_gl_BTN1_total_time + u32_gl_BTN2_total_time +u32_gl_UART_TRANSMITTER_total_time +u32_gl_RECIEVER_total_time+u32_gl_T1_LOAD_total_time+u32_gl_T2_LOAD_total_time)/(float)TotalSystemTime)*100; \
 																}
 
 #endif /* FREERTOS_CONFIG_H */
