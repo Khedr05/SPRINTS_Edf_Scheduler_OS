@@ -22,7 +22,7 @@
 |     Mowafey    | (https://github.com/Mahmoud-Mowafy) |
 
 
-## Documentation
+## Quick Links
 > - `Project Documentation`
     [PDF](https://github.com/sherifkhadr/SPRINTS_Edf_Scheduler_OS/tree/delivery_branch/02_Documentation)
 > - `Team Backlog`
