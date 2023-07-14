@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.29.0.0
 Copyright (C) 2019 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: sherif ashraf, sherif ashraf, LIC=----
+License Information: atef ahmed, sprints, LIC=----
  
 Tool Versions:
 Toolchain:       MDK-Lite  Version: 5.29.0.0
@@ -21,58 +21,36 @@ Target DLL:      UL2ARM.DLL V1.74.10.0
 Dialog DLL:      TARMP.DLL V1.53.0.0
  
 <h2>Project:</h2>
-D:\Programing\Embedded System Diploma\Sprints\sprints_github\SPRINTS_Edf_Scheduler_OS\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\RTOSDemo.uvproj
+C:\Users\atef\Desktop\sprints_BC\SPRINTS_Edf_Scheduler_OS\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\RTOSDemo.uvproj
 Project File Date:  07/14/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Rebuild target 'RTOSDemo_THUMB'
-compiling serial.c...
-..\Starter_Files_V1\source\serial.c(185): warning:  #550-D: variable "cChar"  was set but never used
-  signed char cChar;
-..\Starter_Files_V1\source\serial.c: 1 warning, 0 errors
-compiling GPIO.c...
-compiling tasks.c...
-..\..\Source\tasks.c(2244): warning:  #188-D: enumerated type mixed with another type
-  		traceTASK_SWITCHED_IN();
-..\..\Source\tasks.c(3203): warning:  #188-D: enumerated type mixed with another type
-  		traceTASK_SWITCHED_OUT();
-..\..\Source\tasks.c(3255): warning:  #188-D: enumerated type mixed with another type
-  		traceTASK_SWITCHED_IN();
-..\..\Source\tasks.c(3618): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
-  	vTaskSetApplicationTaskTag( NULL, ( void * ) IDLE_PIN );
-..\..\Source\tasks.c: 4 warnings, 0 errors
-compiling queue.c...
-compiling GPIO_cfg.c...
-compiling list.c...
-assembling serialISR.s...
-assembling Startup.s...
-compiling ParTest.c...
-compiling port.c...
+Build target 'RTOSDemo_THUMB'
 compiling main.c...
-..\Starter_Files_V1\source\main.c(154): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
-    vTaskSetApplicationTaskTag( NULL, ( void * ) BTN1_PIN );
-..\Starter_Files_V1\source\main.c(187): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
-    vTaskSetApplicationTaskTag( NULL, ( void * ) BTN2_PIN );
-..\Starter_Files_V1\source\main.c(219): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+..\Starter_Files_V1\source\main.c(220): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
     vTaskSetApplicationTaskTag( NULL, ( void * ) UART_TRANSMITTER_PIN );
-..\Starter_Files_V1\source\main.c(235): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
-      vTaskSetApplicationTaskTag( NULL, ( void * ) RECIEVER_PIN );
-..\Starter_Files_V1\source\main.c(260): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
-    vTaskSetApplicationTaskTag( NULL, ( void * ) T1_LOAD_PIN );
-..\Starter_Files_V1\source\main.c(273): warning:  #111-D: statement is unreachable
+..\Starter_Files_V1\source\main.c(274): warning:  #111-D: statement is unreachable
   	 vTaskDelete(Load_1_Task_Handler);
-..\Starter_Files_V1\source\main.c(288): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
-    vTaskSetApplicationTaskTag( NULL, ( void * ) T2_LOAD_PIN );
-..\Starter_Files_V1\source\main.c(300): warning:  #111-D: statement is unreachable
+..\Starter_Files_V1\source\main.c(301): warning:  #111-D: statement is unreachable
   	 vTaskDelete(Load_2_Task_Handler);
-..\Starter_Files_V1\source\main.c: 8 warnings, 0 errors
-assembling portASM.s...
-compiling heap_2.c...
+..\Starter_Files_V1\source\main.c(384): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+      vTaskSetApplicationTaskTag( PeriodicTransmitterHandler, ( void * ) UART_TRANSMITTER_PIN );
+..\Starter_Files_V1\source\main.c(385): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+  	  vTaskSetApplicationTaskTag( btnTwoEdgeScanningTask_Handler, ( void * ) BTN2_PIN );
+..\Starter_Files_V1\source\main.c(386): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+  	  vTaskSetApplicationTaskTag( btnOneEdgeScanningTask_Handler, ( void * ) BTN1_PIN );
+..\Starter_Files_V1\source\main.c(387): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+  		vTaskSetApplicationTaskTag( UartReceiverHandler, ( void * ) RECIEVER_PIN );
+..\Starter_Files_V1\source\main.c(388): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+  		vTaskSetApplicationTaskTag( Load_1_Task_Handler, ( void * ) T1_LOAD_PIN );
+..\Starter_Files_V1\source\main.c(389): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "TaskHookFunction_t"
+  		vTaskSetApplicationTaskTag( Load_2_Task_Handler, ( void * ) T2_LOAD_PIN );
+..\Starter_Files_V1\source\main.c: 9 warnings, 0 errors
 linking...
-Program Size: Code=12160 RO-data=32 RW-data=296 ZI-data=15376  
+Program Size: Code=15172 RO-data=32 RW-data=312 ZI-data=15376  
 FromELF: creating hex file...
-".\bin\RTOSDemo.axf" - 0 Error(s), 13 Warning(s).
+".\bin\RTOSDemo.axf" - 0 Error(s), 9 Warning(s).
 Build Time Elapsed:  00:00:01
 </pre>
 </body>

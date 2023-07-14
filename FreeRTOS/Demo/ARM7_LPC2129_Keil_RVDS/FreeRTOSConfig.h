@@ -55,7 +55,6 @@
 #define configMINIMAL_STACK_SIZE	( ( unsigned short ) 50 )
 #define configTOTAL_HEAP_SIZE		( ( size_t ) 13 * 1024 )
 #define configMAX_TASK_NAME_LEN		( 8 )
-#define configUSE_TRACE_FACILITY	0
 #define configUSE_16_BIT_TICKS		0
 #define configIDLE_SHOULD_YIELD		1
 #define configUSE_EDF_SCHEDULER   1
@@ -83,8 +82,12 @@ to exclude the API function. */
 #define configUSE_MUTEXES           1
 
 
-
-
+ // to use task state
+#define configGENERATE_RUN_TIME_STATS           1
+#define configUSE_TRACE_FACILITY                1
+#define configUSE_STATS_FORMATTING_FUNCTIONS    1
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
+#define portGET_RUN_TIME_COUNTER_VALUE() (T1TC)     //to convert
 
 /* Define the traceTASK_SWITCHED_IN() macro to output the voltage associated
 with the task being selected to run on port 0. */
@@ -167,6 +170,8 @@ with the task being selected to run on port 0. */
 																			                                                                                                           \
 																		}                                                                                                            \
 																		GPIO_write(PORT_0,(int) pxCurrentTCB->pxTaskTag,PIN_IS_LOW);                                                 \
+																		TotalSystemTime = T1TC; \
+									                  CPULoad = (u32_gl_BTN1_total_time + u32_gl_BTN2_total_time +u32_gl_UART_TRANSMITTER_total_time +u32_gl_RECIEVER_total_time+u32_gl_T1_LOAD_total_time+u32_gl_T2_LOAD_total_time)/(float)TotalSystemTime; \
 																}
 
 #endif /* FREERTOS_CONFIG_H */

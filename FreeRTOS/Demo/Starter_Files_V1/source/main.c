@@ -33,32 +33,34 @@ static void prvSetupHardware( void );
 
 
 /* variables to store in time for tasks*/
-uint32_t u32_gl_BTN1_in_time                 = FALSE_VALUE;
-uint32_t u32_gl_BTN2_in_time                 = FALSE_VALUE;
-uint32_t u32_gl_UART_TRANSMITTER_in_time     = FALSE_VALUE;
-uint32_t u32_gl_RECIEVER_in_time             = FALSE_VALUE;
-uint32_t u32_gl_T1_LOAD_in_time              = FALSE_VALUE;
-uint32_t u32_gl_T2_LOAD_in_time              = FALSE_VALUE;
-uint32_t u32_gl_IDLE_TASK_in_time            = FALSE_VALUE;
+volatile uint32_t u32_gl_BTN1_in_time                 = FALSE_VALUE;
+volatile uint32_t u32_gl_BTN2_in_time                 = FALSE_VALUE;
+volatile uint32_t u32_gl_UART_TRANSMITTER_in_time     = FALSE_VALUE;
+volatile uint32_t u32_gl_RECIEVER_in_time             = FALSE_VALUE;
+volatile uint32_t u32_gl_T1_LOAD_in_time              = FALSE_VALUE;
+volatile uint32_t u32_gl_T2_LOAD_in_time              = FALSE_VALUE;
+volatile uint32_t u32_gl_IDLE_TASK_in_time            = FALSE_VALUE;
 
 /* variables to store out time for tasks*/
-uint32_t u32_gl_BTN1_out_time                 = FALSE_VALUE;
-uint32_t u32_gl_BTN2_out_time                 = FALSE_VALUE;
-uint32_t u32_gl_UART_TRANSMITTER_out_time     = FALSE_VALUE;
-uint32_t u32_gl_RECIEVER_out_time             = FALSE_VALUE;
-uint32_t u32_gl_T1_LOAD_out_time              = FALSE_VALUE;
-uint32_t u32_gl_T2_LOAD_out_time              = FALSE_VALUE;
-uint32_t u32_gl_IDLE_TASK_out_time            = FALSE_VALUE;
+volatile uint32_t u32_gl_BTN1_out_time                 = FALSE_VALUE;
+volatile uint32_t u32_gl_BTN2_out_time                 = FALSE_VALUE;
+volatile uint32_t u32_gl_UART_TRANSMITTER_out_time     = FALSE_VALUE;
+volatile uint32_t u32_gl_RECIEVER_out_time             = FALSE_VALUE;
+volatile uint32_t u32_gl_T1_LOAD_out_time              = FALSE_VALUE;
+volatile uint32_t u32_gl_T2_LOAD_out_time              = FALSE_VALUE;
+volatile uint32_t u32_gl_IDLE_TASK_out_time            = FALSE_VALUE;
 
 /* variables to store total time for tasks*/
-uint32_t u32_gl_BTN1_total_time               = FALSE_VALUE;
-uint32_t u32_gl_BTN2_total_time               = FALSE_VALUE;
-uint32_t u32_gl_UART_TRANSMITTER_total_time   = FALSE_VALUE;
-uint32_t u32_gl_RECIEVER_total_time           = FALSE_VALUE;
-uint32_t u32_gl_T1_LOAD_total_time            = FALSE_VALUE;
-uint32_t u32_gl_T2_LOAD_total_time            = FALSE_VALUE;
-uint32_t u32_gl_IDLE_TASK_total_time          = FALSE_VALUE;
+volatile uint32_t u32_gl_BTN1_total_time               = FALSE_VALUE;
+volatile uint32_t u32_gl_BTN2_total_time               = FALSE_VALUE;
+volatile uint32_t u32_gl_UART_TRANSMITTER_total_time   = FALSE_VALUE;
+volatile uint32_t u32_gl_RECIEVER_total_time           = FALSE_VALUE;
+volatile uint32_t u32_gl_T1_LOAD_total_time            = FALSE_VALUE;
+volatile uint32_t u32_gl_T2_LOAD_total_time            = FALSE_VALUE;
+volatile uint32_t u32_gl_IDLE_TASK_total_time          = FALSE_VALUE;
 
+ volatile float CPULoad;
+ volatile unsigned int TotalSystemTime;
 
 /********************************************************/
  /**********  SHERIF_START *****************************/
@@ -151,7 +153,7 @@ void btnOneEdgeScanningTask(void * pvParameters)
 	TickType_t xLastTimeOfRunning;
 	xLastTimeOfRunning = xTaskGetTickCount();
 	/* This task is going to be represented by a voltage scale of 1. */
-  vTaskSetApplicationTaskTag( NULL, ( void * ) BTN1_PIN );
+  
 	for(;;)
 	{
 		   //IDLE LOW
@@ -184,7 +186,6 @@ void btnTwoEdgeScanningTask(void * pvParameters)
 	TickType_t xLastTimeOfRunning;
 	xLastTimeOfRunning = xTaskGetTickCount();
 	/* This task is going to be represented by a voltage scale of 1. */
-  vTaskSetApplicationTaskTag( NULL, ( void * ) BTN2_PIN );
 	for(;;)
 	{
 		   // IDLE LOW
@@ -232,7 +233,7 @@ void Uart_Receiver(void *pvParameters) {
 		TickType_t xLastWakeTime;
 		xLastWakeTime = xTaskGetTickCount();
 	 /* This task is going to be represented by a voltage scale of 1. */
-    vTaskSetApplicationTaskTag( NULL, ( void * ) RECIEVER_PIN );
+   
     for(;;) 
 			{
 				//idle_low
@@ -257,7 +258,7 @@ void Load_1_Task(void * pvParameters)
   // Initialise the xLastWakeTime variable with the current time.
   xLastWakeTime = xTaskGetTickCount ();
 	/* This task is going to be represented by a voltage scale of 1. */
-  vTaskSetApplicationTaskTag( NULL, ( void * ) T1_LOAD_PIN );
+
  for(;;)
 	{
 		//idle_low
@@ -285,7 +286,7 @@ void Load_2_Task(void * pvParameters)
   // Initialise the xLastWakeTime variable with the current time.
   xLastWakeTime = xTaskGetTickCount ();
 	/* This task is going to be represented by a voltage scale of 1. */
-  vTaskSetApplicationTaskTag( NULL, ( void * ) T2_LOAD_PIN );
+
  for(;;)
 	{
 		//idle_low
@@ -380,6 +381,12 @@ int main( void )
 									&Load_2_Task_Handler,
 									LOAD_2_TASK_PERIOD	);
 /************ END_Mowafey********************************/												 
+    vTaskSetApplicationTaskTag( PeriodicTransmitterHandler, ( void * ) UART_TRANSMITTER_PIN );
+	  vTaskSetApplicationTaskTag( btnTwoEdgeScanningTask_Handler, ( void * ) BTN2_PIN );
+	  vTaskSetApplicationTaskTag( btnOneEdgeScanningTask_Handler, ( void * ) BTN1_PIN );
+		vTaskSetApplicationTaskTag( UartReceiverHandler, ( void * ) RECIEVER_PIN );
+		vTaskSetApplicationTaskTag( Load_1_Task_Handler, ( void * ) T1_LOAD_PIN );
+		vTaskSetApplicationTaskTag( Load_2_Task_Handler, ( void * ) T2_LOAD_PIN );
 
 	/* Now all the tasks have been started - start the scheduler.
 
