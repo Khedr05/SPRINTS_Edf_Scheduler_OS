@@ -142,6 +142,13 @@ QueueHandle_t xUARTQueue;
 //}
 
 /*-----------------------------------------------------------*/
+void vApplicationTickHook( void );
+
+void vApplicationTickHook( void )
+{
+	GPIO_toggle(PORT_0,TICK_PIN);
+}
+
 
 /**********  SHERIF_START *****************************/
 /******************** TASK 1 IMPLEMNTATION *************************/
@@ -213,7 +220,7 @@ void btnTwoEdgeScanningTask(void * pvParameters)
 /**********  SHERIF_END *****************************/
 
 void Periodic_Transmitter(void *pvParameters) {
-	const char *UART_str = "\nahmed_atef";
+	const char *UART_str = "\na100 ms periodic task";
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 	/* This task is going to be represented by a voltage scale of 1. */
@@ -238,7 +245,7 @@ void Uart_Receiver(void *pvParameters) {
 			{
 				//idle_low
 				//GPIO_write (PORT_0, IDLE_PIN, PIN_IS_LOW);
-				if (xQueueReceive(xUARTQueue, &UART_str, portMAX_DELAY))  
+				if (xQueueReceive(xUARTQueue, &UART_str, 0))  
 				{
 						vSerialPutString ((const signed char*)UART_str, strlen(UART_str));
 				}
