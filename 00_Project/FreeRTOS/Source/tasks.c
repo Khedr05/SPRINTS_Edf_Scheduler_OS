@@ -233,9 +233,10 @@ TickType_t TickType_gl_max_period = FALSE_VALUE;
 /*xGenericListIteam must contain thedeadline value */
 #define prvAddTaskToReadyList( pxTCB )  \
   /*ADDED V2 IDLE update */                                                                       \
-  traceMOVED_TASK_TO_READY_STATE( pxTCB );														                       \
+  traceMOVED_TASK_TO_READY_STATE( pxTCB );   \
+  taskRECORD_READY_PRIORITY( ( pxTCB )->uxPriority );	\
   vListInsert(&(xReadyTasksListEDF), &( ( pxTCB )->xStateListItem ))  \
- //tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )                                                                                                                                                                                                                                                               
+  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )                                                                                                                                                                                                                                                               
 //  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB ) 
 #endif
 
@@ -2704,14 +2705,7 @@ TCB_t *pxTCB;
 			{
 				/* Fill in an TaskStatus_t structure with information on each
 				task in the Ready state. */
-				do
-				{
-					uxQueue--;
-					uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), &(xReadyTasksListEDF), eReady );
-
-				}while(0);
-				//while( uxQueue > ( UBaseType_t ) tskIDLE_PRIORITY ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
-
+				uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), &(xReadyTasksListEDF), eReady );
 				/* Fill in an TaskStatus_t structure with information on each
 				task in the Blocked state. */
 				uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), ( List_t * ) pxDelayedTaskList, eBlocked );
@@ -4775,7 +4769,7 @@ unsigned int cpuLoad = 0;
 
             if( ulStatsAsPercentage > 0UL )
             {
-               sprintf( pcWriteBuffer, "\n%s\t\t%lu\t\t",
+               sprintf( pcWriteBuffer, "\n%s\t\t%lu%%\t\t",
                                  pxTaskStatusArray[ x ].pcTaskName,
                                  ulStatsAsPercentage );
 							if(pxTaskStatusArray[ x ].xHandle != xIdleTaskHandle)
@@ -4787,18 +4781,13 @@ unsigned int cpuLoad = 0;
             {
                /* If the percentage is zero here then the task has
                consumed less than 1% of the total run time. */
-               sprintf( pcWriteBuffer, "\n%s\t\t%lu\t\t",
-                                 pxTaskStatusArray[ x ].pcTaskName,
-                                  ulStatsAsPercentage );
-							if(pxTaskStatusArray[ x ].xHandle != xIdleTaskHandle)
-							{
-								 cpuLoad += ulStatsAsPercentage;
-							} 
+               sprintf( pcWriteBuffer, "\n%s\t\t<1%%\t\t",
+                                 pxTaskStatusArray[ x ].pcTaskName);
             }
 
             pcWriteBuffer += strlen( ( char * ) pcWriteBuffer );
          }
-               sprintf( pcWriteBuffer, "\ncpu Load = %d",cpuLoad);				 
+               sprintf( pcWriteBuffer, "\n--CPU LOad = %d--",cpuLoad);				 
       }
 
       /* The array is no longer needed, free the memory it consumes. */

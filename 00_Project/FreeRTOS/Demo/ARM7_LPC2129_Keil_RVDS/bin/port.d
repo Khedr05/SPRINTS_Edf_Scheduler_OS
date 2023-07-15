@@ -14,3 +14,4 @@
 .\bin\port.o: ..\..\Source\include\list.h
 .\bin\port.o: .\app.h
 .\bin\port.o: ..\Starter_Files_V1\header\GPIO.h
+.\bin\port.o: ..\Starter_Files_V1\header\serial.h

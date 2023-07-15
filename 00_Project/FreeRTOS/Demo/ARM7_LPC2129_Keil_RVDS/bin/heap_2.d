@@ -14,3 +14,4 @@
 .\bin\heap_2.o: ..\..\Source\include\list.h
 .\bin\heap_2.o: .\app.h
 .\bin\heap_2.o: ..\Starter_Files_V1\header\GPIO.h
+.\bin\heap_2.o: ..\Starter_Files_V1\header\serial.h

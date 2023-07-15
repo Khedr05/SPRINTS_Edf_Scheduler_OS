@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.29.0.0
 Copyright (C) 2019 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: sherif ashraf, sherif ashraf, LIC=----
+License Information: Sharpel M, Na, LIC=----
  
 Tool Versions:
 Toolchain:       MDK-Lite  Version: 5.29.0.0
@@ -21,14 +21,44 @@ Target DLL:      UL2ARM.DLL V1.74.10.0
 Dialog DLL:      TARMP.DLL V1.53.0.0
  
 <h2>Project:</h2>
-D:\Programing\Embedded System Diploma\Sprints\sprints_github\SPRINTS_Edf_Scheduler_OS\00_Project\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\RTOSDemo.uvproj
-Project File Date:  07/14/2023
+D:\sprints\Rtos\SPRINTS_Edf_Scheduler_OS\00_Project\FreeRTOS\Demo\ARM7_LPC2129_Keil_RVDS\RTOSDemo.uvproj
+Project File Date:  07/15/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'RTOSDemo_THUMB'
-".\bin\RTOSDemo.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:00
+Rebuild target 'RTOSDemo_THUMB'
+assembling serialISR.s...
+assembling Startup.s...
+compiling GPIO.c...
+compiling ParTest.c...
+compiling GPIO_cfg.c...
+compiling main.c...
+..\Starter_Files_V1\source\main.c(220): warning:  #177-D: variable "UART_str"  was declared but never referenced
+  	const char *UART_str = "\na100 ms periodic task";
+..\Starter_Files_V1\source\main.c: 1 warning, 0 errors
+compiling serial.c...
+compiling list.c...
+compiling port.c...
+compiling tasks.c...
+..\..\Source\tasks.c(2263): warning:  #188-D: enumerated type mixed with another type
+      traceTASK_SWITCHED_IN();
+..\..\Source\tasks.c(2699): warning:  #177-D: variable "uxQueue"  was declared but never referenced
+  	UBaseType_t uxTask = 0, uxQueue = configMAX_PRIORITIES;
+..\..\Source\tasks.c(3216): warning:  #188-D: enumerated type mixed with another type
+  		traceTASK_SWITCHED_OUT();
+..\..\Source\tasks.c(3268): warning:  #188-D: enumerated type mixed with another type
+  		traceTASK_SWITCHED_IN();
+..\..\Source\tasks.c(4752): warning:  #167-D: argument of type "unsigned long *" is incompatible with parameter of type "uint32_t *const"
+                                   &ulTotalRunTime );
+..\..\Source\tasks.c: 5 warnings, 0 errors
+compiling queue.c...
+assembling portASM.s...
+compiling heap_2.c...
+linking...
+Program Size: Code=15488 RO-data=32 RW-data=316 ZI-data=15532  
+FromELF: creating hex file...
+".\bin\RTOSDemo.axf" - 0 Error(s), 6 Warning(s).
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

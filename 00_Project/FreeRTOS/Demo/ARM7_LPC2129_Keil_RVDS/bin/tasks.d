@@ -15,6 +15,7 @@
 .\bin\tasks.o: ..\..\Source\include\list.h
 .\bin\tasks.o: .\app.h
 .\bin\tasks.o: ..\Starter_Files_V1\header\GPIO.h
+.\bin\tasks.o: ..\Starter_Files_V1\header\serial.h
 .\bin\tasks.o: ..\..\Source\include\timers.h
 .\bin\tasks.o: ..\..\Source\include\stack_macros.h
 .\bin\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

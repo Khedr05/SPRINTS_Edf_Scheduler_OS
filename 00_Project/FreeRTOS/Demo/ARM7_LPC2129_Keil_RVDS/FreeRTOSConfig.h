@@ -165,7 +165,8 @@ with the task being selected to run on port 0. */
 	                                  else if (IDLE_PIN == (int) pxCurrentTCB->pxTaskTag)                                                          \
 																		{                                                                      				                               \
 																			u32_gl_IDLE_TASK_out_time = T1TC;                                                                          \
-																		  u32_gl_IDLE_TASK_total_time  += u32_gl_IDLE_TASK_out_time - u32_gl_IDLE_TASK_in_time;}                     \
+																		  u32_gl_IDLE_TASK_total_time  += u32_gl_IDLE_TASK_out_time - u32_gl_IDLE_TASK_in_time;                   \
+																		}			                                                                       																\
 																		else                                                                                                         \
 																		{                                                                                                            \
 																			                                                                                                           \

@@ -69,7 +69,7 @@ volatile uint32_t u32_gl_IDLE_TASK_total_time          = FALSE_VALUE;
  
  #define T1_TASK_PRIORITY         1
  #define T1_TASK_STACK_SIZE       250
- #define T1_TASK_NAME							"btnOneEdgeScanningTask"
+ #define T1_TASK_NAME							"B-one"
  #define T1_Deadline_TIME					50
  #define T1_Periodicity_TIME      50
  
@@ -77,7 +77,7 @@ volatile uint32_t u32_gl_IDLE_TASK_total_time          = FALSE_VALUE;
  
  #define T2_TASK_PRIORITY         1
  #define T2_TASK_STACK_SIZE       250
- #define T2_TASK_NAME							"btnTwoEdgeScanningTask"
+ #define T2_TASK_NAME							"B-two"
  #define T2_Deadline_TIME					50
  #define T2_Periodicity_TIME      50
  
@@ -86,12 +86,12 @@ volatile uint32_t u32_gl_IDLE_TASK_total_time          = FALSE_VALUE;
 /*************************TASK3*************************/
 #define PT_TASK_PRIORITY 								    1
 #define PT_TASK_STACK_SIZE         			    100
-#define PT_TASK_NAME				       			    "Periodic_Transmitter"
+#define PT_TASK_NAME				       			    "Transmit"
 #define PERIODIC_TASK_PERIOD			100
 /*************************TASK4*************************/
 #define Uart_TASK_PRIORITY    						  1
 #define Uart_TASK_STACK_SIZE  						  100
-#define Uart_TASK_NAME	                  "UARTreceiver"
+#define Uart_TASK_NAME	                  "Receiver"
 #define UART_RECEIVER_PERIOD			20
 
 /*********************** Mowafey ****************************/
@@ -135,13 +135,19 @@ QueueHandle_t xUARTQueue;
 #define    ItemSize        20 * sizeof( unsigned char )
 
 /*-----------------Tasks implementation------------------------*/
-char taskStatuesBuffer[400];
+char taskStatuesBuffer[150];
 /*-----------------------------------------------------------*/
 void vApplicationTickHook( void );
 
 void vApplicationTickHook( void )
 {
 	GPIO_toggle(PORT_0,TICK_PIN);
+}
+void system_report(void);
+void system_report(void)
+{
+	vTaskGetRunTimeStats((char *)taskStatuesBuffer);
+	vSerialPutString ((const signed char*)taskStatuesBuffer, strlen(taskStatuesBuffer));
 }
 
 
@@ -218,9 +224,8 @@ void Periodic_Transmitter(void *pvParameters) {
   vTaskSetApplicationTaskTag( NULL, ( TaskHookFunction_t) UART_TRANSMITTER_PIN );
     for(;;) 
 				{
-					vTaskGetRunTimeStats((char *)taskStatuesBuffer);
-					vSerialPutString ((const signed char*)taskStatuesBuffer, strlen(taskStatuesBuffer));
-					//xQueueSend(xUARTQueue,&taskStatuesBuffer,0);
+					
+					system_report();                                                                                           \
 					vTaskDelayUntil(&xLastWakeTime,PERIODIC_TASK_PERIOD);
 				}
 }
@@ -339,7 +344,7 @@ int main( void )
 												 ( void * ) NULL,
 												 PT_TASK_PRIORITY,
 												 &PeriodicTransmitterHandler,
-												 PERIODIC_TASK_PERIOD);	
+												 250);	
 								 
 								 
 		xTaskPeriodicCreate( Uart_Receiver,

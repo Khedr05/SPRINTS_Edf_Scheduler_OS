@@ -6,6 +6,7 @@
 #define APP_H
 
 #include "GPIO.h"
+#include "serial.h"
 #define BTN1_PIN                PIN8
 #define BTN2_PIN                PIN9
 #define UART_TRANSMITTER_PIN    PIN2
@@ -46,6 +47,10 @@ extern volatile uint32_t u32_gl_IDLE_TASK_total_time       ;
 
 extern volatile float CPULoad;
 extern volatile unsigned int TotalSystemTime;
+
+extern char taskStatuesBuffer[150];
+
+extern void system_report(void);
 #endif
 
 
