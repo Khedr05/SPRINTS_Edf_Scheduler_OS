@@ -135,7 +135,7 @@ QueueHandle_t xUARTQueue;
 #define    ItemSize        20 * sizeof( unsigned char )
 
 /*-----------------Tasks implementation------------------------*/
-
+char taskStatuesBuffer[400];
 /*-----------------------------------------------------------*/
 void vApplicationTickHook( void );
 
@@ -218,7 +218,9 @@ void Periodic_Transmitter(void *pvParameters) {
   vTaskSetApplicationTaskTag( NULL, ( TaskHookFunction_t) UART_TRANSMITTER_PIN );
     for(;;) 
 				{
-					xQueueSend(xUARTQueue, &UART_str, portMAX_DELAY);
+					vTaskGetRunTimeStats((char *)taskStatuesBuffer);
+					vSerialPutString ((const signed char*)taskStatuesBuffer, strlen(taskStatuesBuffer));
+					//xQueueSend(xUARTQueue,&taskStatuesBuffer,0);
 					vTaskDelayUntil(&xLastWakeTime,PERIODIC_TASK_PERIOD);
 				}
 }

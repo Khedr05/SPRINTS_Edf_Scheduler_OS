@@ -235,7 +235,7 @@ TickType_t TickType_gl_max_period = FALSE_VALUE;
   /*ADDED V2 IDLE update */                                                                       \
   traceMOVED_TASK_TO_READY_STATE( pxTCB );														                       \
   vListInsert(&(xReadyTasksListEDF), &( ( pxTCB )->xStateListItem ))  \
- // tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )                                                                                                                                                                                                                                                               
+ //tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )                                                                                                                                                                                                                                                               
 //  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB ) 
 #endif
 
@@ -2707,9 +2707,10 @@ TCB_t *pxTCB;
 				do
 				{
 					uxQueue--;
-					uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), &( pxReadyTasksLists[ uxQueue ] ), eReady );
+					uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), &(xReadyTasksListEDF), eReady );
 
-				} while( uxQueue > ( UBaseType_t ) tskIDLE_PRIORITY ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+				}while(0);
+				//while( uxQueue > ( UBaseType_t ) tskIDLE_PRIORITY ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
 
 				/* Fill in an TaskStatus_t structure with information on each
 				task in the Blocked state. */
@@ -4731,143 +4732,80 @@ TCB_t *pxTCB;
 
 #if ( ( configGENERATE_RUN_TIME_STATS == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
 
-	void vTaskGetRunTimeStats( char *pcWriteBuffer )
-	{
-	TaskStatus_t *pxTaskStatusArray;
-	UBaseType_t uxArraySize, x;
-	uint32_t ulTotalTime, ulStatsAsPercentage;
-
-		#if( configUSE_TRACE_FACILITY != 1 )
-		{
-			#error configUSE_TRACE_FACILITY must also be set to 1 in FreeRTOSConfig.h to use vTaskGetRunTimeStats().
-		}
-		#endif
-
-		/*
-		 * PLEASE NOTE:
-		 *
-		 * This function is provided for convenience only, and is used by many
-		 * of the demo applications.  Do not consider it to be part of the
-		 * scheduler.
-		 *
-		 * vTaskGetRunTimeStats() calls uxTaskGetSystemState(), then formats part
-		 * of the uxTaskGetSystemState() output into a human readable table that
-		 * displays the amount of time each task has spent in the Running state
-		 * in both absolute and percentage terms.
-		 *
-		 * vTaskGetRunTimeStats() has a dependency on the sprintf() C library
-		 * function that might bloat the code size, use a lot of stack, and
-		 * provide different results on different platforms.  An alternative,
-		 * tiny, third party, and limited functionality implementation of
-		 * sprintf() is provided in many of the FreeRTOS/Demo sub-directories in
-		 * a file called printf-stdarg.c (note printf-stdarg.c does not provide
-		 * a full snprintf() implementation!).
-		 *
-		 * It is recommended that production systems call uxTaskGetSystemState()
-		 * directly to get access to raw stats data, rather than indirectly
-		 * through a call to vTaskGetRunTimeStats().
-		 */
-
-		/* Make sure the write buffer does not contain a string. */
-		*pcWriteBuffer = ( char ) 0x00;
-
-		/* Take a snapshot of the number of tasks in case it changes while this
-		function is executing. */
-		uxArraySize = uxCurrentNumberOfTasks;
-
-		/* Allocate an array index for each task.  NOTE!  If
-		configSUPPORT_DYNAMIC_ALLOCATION is set to 0 then pvPortMalloc() will
-		equate to NULL. */
-		pxTaskStatusArray = pvPortMalloc( uxCurrentNumberOfTasks * sizeof( TaskStatus_t ) ); /*lint !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack and this allocation allocates a struct that has the alignment requirements of a pointer. */
-
-		if( pxTaskStatusArray != NULL )
-		{
-			/* Generate the (binary) data. */
-			uxArraySize = uxTaskGetSystemState( pxTaskStatusArray, uxArraySize, &ulTotalTime );
-
-			/* For percentage calculations. */
-			ulTotalTime /= 100UL;
-
-			/* Avoid divide by zero errors. */
-			if( ulTotalTime > 0UL )
-			{
-				/* Create a human readable table from the binary data. */
-				for( x = 0; x < uxArraySize; x++ )
-				{
-					/* What percentage of the total run time has the task used?
-					This will always be rounded down to the nearest integer.
-					ulTotalRunTimeDiv100 has already been divided by 100. */
-					ulStatsAsPercentage = pxTaskStatusArray[ x ].ulRunTimeCounter / ulTotalTime;
-
-					/* Write the task name to the string, padding with
-					spaces so it can be printed in tabular form more
-					easily. */
-					pcWriteBuffer = prvWriteNameToBuffer( pcWriteBuffer, pxTaskStatusArray[ x ].pcTaskName );
-
-					if( ulStatsAsPercentage > 0UL )
-					{
-						#ifdef portLU_PRINTF_SPECIFIER_REQUIRED
-						{
-							sprintf( pcWriteBuffer, "\t%lu\t\t%lu%%\r\n", pxTaskStatusArray[ x ].ulRunTimeCounter, ulStatsAsPercentage );
-						}
-						#else
-						{
-							/* sizeof( int ) == sizeof( long ) so a smaller
-							printf() library can be used. */
-							sprintf( pcWriteBuffer, "\t%u\t\t%u%%\r\n", ( unsigned int ) pxTaskStatusArray[ x ].ulRunTimeCounter, ( unsigned int ) ulStatsAsPercentage ); /*lint !e586 sprintf() allowed as this is compiled with many compilers and this is a utility function only - not part of the core kernel implementation. */
-						}
-						#endif
-					}
-					else
-					{
-						/* If the percentage is zero here then the task has
-						consumed less than 1% of the total run time. */
-						#ifdef portLU_PRINTF_SPECIFIER_REQUIRED
-						{
-							sprintf( pcWriteBuffer, "\t%lu\t\t<1%%\r\n", pxTaskStatusArray[ x ].ulRunTimeCounter );
-						}
-						#else
-						{
-							/* sizeof( int ) == sizeof( long ) so a smaller
-							printf() library can be used. */
-							sprintf( pcWriteBuffer, "\t%u\t\t<1%%\r\n", ( unsigned int ) pxTaskStatusArray[ x ].ulRunTimeCounter ); /*lint !e586 sprintf() allowed as this is compiled with many compilers and this is a utility function only - not part of the core kernel implementation. */
-						}
-						#endif
-					}
-
-					pcWriteBuffer += strlen( pcWriteBuffer ); /*lint !e9016 Pointer arithmetic ok on char pointers especially as in this case where it best denotes the intent of the code. */
-				}
-			}
-			else
-			{
-				mtCOVERAGE_TEST_MARKER();
-			}
-
-			/* Free the array again.  NOTE!  If configSUPPORT_DYNAMIC_ALLOCATION
-			is 0 then vPortFree() will be #defined to nothing. */
-			vPortFree( pxTaskStatusArray );
-		}
-		else
-		{
-			mtCOVERAGE_TEST_MARKER();
-		}
-	}
-
-#endif /* ( ( configGENERATE_RUN_TIME_STATS == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) ) */
-/*-----------------------------------------------------------*/
-
-TickType_t uxTaskResetEventItemValue( void )
+void vTaskGetRunTimeStats(char *pcWriteBuffer )
 {
-TickType_t uxReturn;
+TaskStatus_t *pxTaskStatusArray;
+volatile UBaseType_t uxArraySize, x;
+unsigned long ulTotalRunTime, ulStatsAsPercentage;
+unsigned int cpuLoad = 0;	
 
-	uxReturn = listGET_LIST_ITEM_VALUE( &( pxCurrentTCB->xEventListItem ) );
+   /* Make sure the write buffer does not contain a string. */
+   *pcWriteBuffer = 0x00;
 
-	/* Reset the event list item to its normal value - so it can be used with
-	queues and semaphores. */
-	listSET_LIST_ITEM_VALUE( &( pxCurrentTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) pxCurrentTCB->uxPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+   /* Take a snapshot of the number of tasks in case it changes while this
+   function is executing. */
+   uxArraySize = uxTaskGetNumberOfTasks();
 
-	return uxReturn;
+   /* Allocate a TaskStatus_t structure for each task.  An array could be
+   allocated statically at compile time. */
+   pxTaskStatusArray = pvPortMalloc( uxArraySize * sizeof( TaskStatus_t ) );
+
+   if( pxTaskStatusArray != NULL )
+   {
+      /* Generate raw status information about each task. */
+      uxArraySize = uxTaskGetSystemState( pxTaskStatusArray,
+                                 uxArraySize,
+                                 &ulTotalRunTime );
+
+      /* For percentage calculations. */
+      ulTotalRunTime /= 100UL;
+
+      /* Avoid divide by zero errors. */
+      if( ulTotalRunTime > 0 )
+      {
+         /* For each populated position in the pxTaskStatusArray array,
+         format the raw data as human readable ASCII data. */
+         for( x = 0; x < uxArraySize; x++ )
+         {
+            /* What percentage of the total run time has the task used?
+            This will always be rounded down to the nearest integer.
+            ulTotalRunTimeDiv100 has already been divided by 100. */
+            ulStatsAsPercentage =
+                  pxTaskStatusArray[ x ].ulRunTimeCounter / ulTotalRunTime;
+
+            if( ulStatsAsPercentage > 0UL )
+            {
+               sprintf( pcWriteBuffer, "\n%s\t\t%lu\t\t",
+                                 pxTaskStatusArray[ x ].pcTaskName,
+                                 ulStatsAsPercentage );
+							if(pxTaskStatusArray[ x ].xHandle != xIdleTaskHandle)
+							{
+								 cpuLoad += ulStatsAsPercentage;
+							} 
+            }
+            else
+            {
+               /* If the percentage is zero here then the task has
+               consumed less than 1% of the total run time. */
+               sprintf( pcWriteBuffer, "\n%s\t\t%lu\t\t",
+                                 pxTaskStatusArray[ x ].pcTaskName,
+                                  ulStatsAsPercentage );
+							if(pxTaskStatusArray[ x ].xHandle != xIdleTaskHandle)
+							{
+								 cpuLoad += ulStatsAsPercentage;
+							} 
+            }
+
+            pcWriteBuffer += strlen( ( char * ) pcWriteBuffer );
+         }
+               sprintf( pcWriteBuffer, "\ncpu Load = %d",cpuLoad);				 
+      }
+
+      /* The array is no longer needed, free the memory it consumes. */
+      vPortFree( pxTaskStatusArray );
+   }
 }
+#endif
 /*-----------------------------------------------------------*/
 
 #if ( configUSE_MUTEXES == 1 )
