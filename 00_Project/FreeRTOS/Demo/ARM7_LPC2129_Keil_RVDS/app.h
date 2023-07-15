@@ -6,14 +6,14 @@
 #define APP_H
 
 #include "GPIO.h"
-#define BTN1_PIN                24
-#define BTN2_PIN                25
-#define UART_TRANSMITTER_PIN    18
-#define RECIEVER_PIN            19
-#define T1_LOAD_PIN             20
-#define T2_LOAD_PIN             21
-#define IDLE_PIN                22
-#define TICK_PIN                23
+#define BTN1_PIN                PIN8
+#define BTN2_PIN                PIN9
+#define UART_TRANSMITTER_PIN    PIN2
+#define RECIEVER_PIN            PIN3
+#define T1_LOAD_PIN             PIN4
+#define T2_LOAD_PIN             PIN5
+#define IDLE_PIN                PIN6
+#define TICK_PIN                PIN7
 #define FALSE_VALUE             0
 
 typedef unsigned int uint32_t;

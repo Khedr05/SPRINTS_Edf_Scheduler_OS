@@ -43,7 +43,8 @@
  *----------------------------------------------------------*/
 /*******************************EDF_Mowafey****************************************/
 			/*Define the IDLE task deadline*/
-#define  INITIDLEPERIOD  				600
+			//INITIAL PERIOD FOR IDLE TASK
+#define  INITIDLEPERIOD  				50
 /*****************************END_EDF_Mowafey***************************************/
 
 #define configUSE_PREEMPTION		1

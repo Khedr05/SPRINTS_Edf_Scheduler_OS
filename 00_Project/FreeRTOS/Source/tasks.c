@@ -41,7 +41,7 @@ task.h is included from an application file. */
 #include "stack_macros.h"
 
 
-#define IDLE_OFFSET       10
+#define IDLE_OFFSET       20
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
 because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
 for the header files above, but not in this file, in order to generate the
@@ -214,6 +214,11 @@ count overflows. */
 /*-----------------------------------------------------------*/
 
 /*SHARPEL_EDF*/
+
+// THIS GLOBAL TO STORE MAX PERIOD
+TickType_t TickType_gl_max_period = FALSE_VALUE;
+
+
 #if configUSE_EDF_SCHEDULER == 0
 /*
  * Place the task represented by pxTCB into the appropriate ready list for
@@ -229,10 +234,6 @@ count overflows. */
 #define prvAddTaskToReadyList( pxTCB )  \
   /*ADDED V2 IDLE update */                                                                       \
   traceMOVED_TASK_TO_READY_STATE( pxTCB );														                       \
-  if(listGET_LIST_ITEM_VALUE( &( xIdleTaskHandle->xStateListItem) ) <= listGET_LIST_ITEM_VALUE( &( ( pxTCB )->xStateListItem) )) \
- {                                                                                                                                 \
-	 listSET_LIST_ITEM_VALUE( &( ( xIdleTaskHandle->xStateListItem) ), ( pxTCB)->xTaskPeriod +IDLE_OFFSET);                       \
- }                                                                                                                                   \
   vListInsert(&(xReadyTasksListEDF), &( ( pxTCB )->xStateListItem ))  \
  // tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )                                                                                                                                                                                                                                                               
 //  tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB ) 
@@ -1081,8 +1082,25 @@ UBaseType_t x;
 
 	pxNewTCB->uxPriority  = uxPriority;
 	
+	/*SHARPEL_EDF*/
 	#if( configUSE_EDF_SCHEDULER == 1 )
-	pxNewTCB->xTaskPeriod = period;
+	//store max period in gl_max to use it with idle task
+	if(TickType_gl_max_period < period)
+	{
+		TickType_gl_max_period = period;
+	}
+	else
+	{
+		//do nothing
+	}
+	if(pxTaskCode == prvIdleTask)
+	{
+	  pxNewTCB->xTaskPeriod = TickType_gl_max_period + IDLE_OFFSET;
+	}
+	else
+	{
+		pxNewTCB->xTaskPeriod = period;
+	}
 	#endif
 	
 	
