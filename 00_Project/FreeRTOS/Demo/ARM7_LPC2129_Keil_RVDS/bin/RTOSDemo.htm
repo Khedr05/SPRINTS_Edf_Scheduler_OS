@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\bin\RTOSDemo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\bin\RTOSDemo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Jul 16 01:48:18 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Jul 16 13:59:02 2023
 <BR><P>
-<H3>Maximum Stack Usage =        220 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        188 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-Periodic_Transmitter &rArr; system_report &rArr; vTaskGetRunTimeStats &rArr; uxTaskGetSystemState &rArr; prvListTasksWithinSingleList &rArr; vTaskGetInfo &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
+main &rArr; vTaskStartScheduler &rArr; xTaskPeriodicCreate &rArr; pvPortMalloc &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
 <P>
 <H3>
 Functions with no stack information
@@ -239,8 +239,8 @@ Global Symbols
 <P><STRONG><a name="[13]"></a>vUART_ISREntry</STRONG> (ARM, 0 bytes, Stack size unknown bytes, serialisr.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> serial.o(.text)
 </UL>
-<P><STRONG><a name="[3e]"></a>GPIO_init</STRONG> (Thumb, 198 bytes, Stack size 0 bytes, gpio.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSetupHardware
+<P><STRONG><a name="[3d]"></a>GPIO_init</STRONG> (Thumb, 198 bytes, Stack size 0 bytes, gpio.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSetupHardware
 </UL>
 
 <P><STRONG><a name="[30]"></a>GPIO_read</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, gpio.o(.text))
@@ -274,15 +274,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskIncrementTick
 </UL>
 
-<P><STRONG><a name="[33]"></a>system_report</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 212 + Unknown Stack Size
-<LI>Call Chain = system_report &rArr; vTaskGetRunTimeStats &rArr; uxTaskGetSystemState &rArr; prvListTasksWithinSingleList &rArr; vTaskGetInfo &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
-</UL>
-<BR>[Calls]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
+<P><STRONG><a name="[33]"></a>system_report</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetRunTimeStats
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vSerialPutString
-</UL>
-<BR>[Called By]<UL><LI><a href="#[f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Periodic_Transmitter
 </UL>
 
 <P><STRONG><a name="[d]"></a>btnOneEdgeScanningTask</STRONG> (Thumb, 90 bytes, Stack size 8 bytes, main.o(.text))
@@ -307,14 +302,13 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
 </UL>
-<P><STRONG><a name="[f]"></a>Periodic_Transmitter</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 220 + Unknown Stack Size
-<LI>Call Chain = Periodic_Transmitter &rArr; system_report &rArr; vTaskGetRunTimeStats &rArr; uxTaskGetSystemState &rArr; prvListTasksWithinSingleList &rArr; vTaskGetInfo &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
+<P><STRONG><a name="[f]"></a>Periodic_Transmitter</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 124 + Unknown Stack Size
+<LI>Call Chain = Periodic_Transmitter &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskGetTickCount
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
+<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 <LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelayUntil
-<LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_report
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
 </UL>
@@ -324,7 +318,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskGetTickCount
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelayUntil
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vSerialPutString
 </UL>
@@ -352,23 +346,23 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 188 + Unknown Stack Size
 <LI>Call Chain = main &rArr; vTaskStartScheduler &rArr; xTaskPeriodicCreate &rArr; pvPortMalloc &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericCreate
+<BR>[Calls]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
+<LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericCreate
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskStartScheduler
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
-<LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSetupHardware
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
+<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSetupHardware
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> __rtentry2.o(.ARM.Collect$$rtentry$$0000000D)
 </UL>
 <P><STRONG><a name="[e8]"></a>timer1Reset</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, main.o(.text), UNUSED)
 
-<P><STRONG><a name="[3d]"></a>xSerialPortInitMinimal</STRONG> (Thumb, 124 bytes, Stack size 16 bytes, serial.o(.text))
+<P><STRONG><a name="[3c]"></a>xSerialPortInitMinimal</STRONG> (Thumb, 124 bytes, Stack size 16 bytes, serial.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16 + Unknown Stack Size
 <LI>Call Chain = xSerialPortInitMinimal
 </UL>
 <BR>[Calls]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSetupHardware
+<BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSetupHardware
 </UL>
 
 <P><STRONG><a name="[e9]"></a>xSerialGetChar</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, serial.o(.text), UNUSED)
@@ -398,7 +392,7 @@ Global Symbols
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortEnterCritical
 </UL>
 <BR>[Called By]<UL><LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvIdleTask
-<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
 <LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Load_2_Task
 <LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Load_1_Task
 <LI><a href="#[10]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Uart_Receiver
@@ -407,7 +401,7 @@ Global Symbols
 <LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;btnOneEdgeScanningTask
 </UL>
 
-<P><STRONG><a name="[3a]"></a>vTaskSetApplicationTaskTag</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, tasks.o(.text))
+<P><STRONG><a name="[41]"></a>vTaskSetApplicationTaskTag</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, tasks.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = vTaskSetApplicationTaskTag &rArr; vPortExitCritical
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortExitCritical
@@ -415,10 +409,9 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvIdleTask
 <LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Periodic_Transmitter
 </UL>
 
-<P><STRONG><a name="[41]"></a>xTaskPeriodicCreate</STRONG> (Thumb, 112 bytes, Stack size 56 bytes, tasks.o(.text))
+<P><STRONG><a name="[40]"></a>xTaskPeriodicCreate</STRONG> (Thumb, 112 bytes, Stack size 56 bytes, tasks.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 148 + Unknown Stack Size
 <LI>Call Chain = xTaskPeriodicCreate &rArr; pvPortMalloc &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
 </UL>
@@ -474,7 +467,7 @@ Global Symbols
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uxTaskGetSystemState
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetInfo
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 <LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelayUntil
 </UL>
@@ -488,7 +481,7 @@ Global Symbols
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uxTaskGetSystemState
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetInfo
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 <LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelayUntil
 </UL>
@@ -517,10 +510,8 @@ Global Symbols
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvAddCurrentTaskToDelayedList
 </UL>
 
-<P><STRONG><a name="[5c]"></a>eTaskGetState</STRONG> (Thumb, 112 bytes, Stack size 32 bytes, tasks.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = eTaskGetState &rArr; vPortExitCritical
-</UL>
-<BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortExitCritical
+<P><STRONG><a name="[5c]"></a>eTaskGetState</STRONG> (Thumb, 112 bytes, Stack size 32 bytes, tasks.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortExitCritical
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortEnterCritical
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetInfo
@@ -585,7 +576,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xPortStartScheduler
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_disable_irq (via Veneer)
-<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
 <LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_write
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -598,17 +589,14 @@ Global Symbols
 
 <P><STRONG><a name="[eb]"></a>xTaskGetTickCountFromISR</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, tasks.o(.text), UNUSED)
 
-<P><STRONG><a name="[81]"></a>uxTaskGetNumberOfTasks</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, tasks.o(.text))
+<P><STRONG><a name="[81]"></a>uxTaskGetNumberOfTasks</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, tasks.o(.text), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetRunTimeStats
 </UL>
 
 <P><STRONG><a name="[ec]"></a>pcTaskGetName</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, tasks.o(.text), UNUSED)
 
-<P><STRONG><a name="[6a]"></a>vTaskGetInfo</STRONG> (Thumb, 132 bytes, Stack size 40 bytes, tasks.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 108 + Unknown Stack Size
-<LI>Call Chain = vTaskGetInfo &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
-</UL>
-<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;eTaskGetState
+<P><STRONG><a name="[6a]"></a>vTaskGetInfo</STRONG> (Thumb, 132 bytes, Stack size 40 bytes, tasks.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;eTaskGetState
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSuspendAll
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskResumeAll
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvTaskCheckFreeStackSpace
@@ -616,11 +604,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvListTasksWithinSingleList
 </UL>
 
-<P><STRONG><a name="[6d]"></a>uxTaskGetSystemState</STRONG> (Thumb, 132 bytes, Stack size 24 bytes, tasks.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 172 + Unknown Stack Size
-<LI>Call Chain = uxTaskGetSystemState &rArr; prvListTasksWithinSingleList &rArr; vTaskGetInfo &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
-</UL>
-<BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSuspendAll
+<P><STRONG><a name="[6d]"></a>uxTaskGetSystemState</STRONG> (Thumb, 82 bytes, Stack size 24 bytes, tasks.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSuspendAll
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskResumeAll
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvListTasksWithinSingleList
 </UL>
@@ -652,7 +637,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueuePeek
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueSemaphoreTake
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 </UL>
 
@@ -675,11 +660,11 @@ Global Symbols
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSendFromISR
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericReset
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvUnlockQueue
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 </UL>
 
-<P><STRONG><a name="[75]"></a>vTaskRemoveFromUnorderedEventList</STRONG> (Thumb, 162 bytes, Stack size 16 bytes, tasks.o(.text), UNUSED)
+<P><STRONG><a name="[75]"></a>vTaskRemoveFromUnorderedEventList</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, tasks.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vListInsert
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uxListRemove
 </UL>
@@ -689,11 +674,11 @@ Global Symbols
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortEnterCritical
 </UL>
 
-<P><STRONG><a name="[78]"></a>vTaskInternalSetTimeOutState</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, tasks.o(.text))
+<P><STRONG><a name="[78]"></a>vTaskInternalSetTimeOutState</STRONG> (Thumb, 90 bytes, Stack size 0 bytes, tasks.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueuePeek
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueSemaphoreTake
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskCheckForTimeOut
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 </UL>
 
@@ -706,7 +691,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueuePeek
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueSemaphoreTake
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 </UL>
 
@@ -753,11 +738,8 @@ Global Symbols
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvWriteNameToBuffer
 </UL>
 
-<P><STRONG><a name="[34]"></a>vTaskGetRunTimeStats</STRONG> (Thumb, 192 bytes, Stack size 32 bytes, tasks.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 204 + Unknown Stack Size
-<LI>Call Chain = vTaskGetRunTimeStats &rArr; uxTaskGetSystemState &rArr; prvListTasksWithinSingleList &rArr; vTaskGetInfo &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
-</UL>
-<BR>[Calls]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod (via Veneer)
+<P><STRONG><a name="[34]"></a>vTaskGetRunTimeStats</STRONG> (Thumb, 192 bytes, Stack size 32 bytes, tasks.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod (via Veneer)
 <LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortFree
@@ -772,7 +754,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueSemaphoreTake
 </UL>
 
-<P><STRONG><a name="[82]"></a>ulTaskNotifyTake</STRONG> (Thumb, 210 bytes, Stack size 16 bytes, tasks.o(.text), UNUSED)
+<P><STRONG><a name="[82]"></a>ulTaskNotifyTake</STRONG> (Thumb, 206 bytes, Stack size 16 bytes, tasks.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortYield (via Veneer)
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortExitCritical
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortEnterCritical
@@ -892,7 +874,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvInitialiseNewQueue
 </UL>
 
-<P><STRONG><a name="[40]"></a>xQueueGenericCreate</STRONG> (Thumb, 62 bytes, Stack size 32 bytes, queue.o(.text))
+<P><STRONG><a name="[3f]"></a>xQueueGenericCreate</STRONG> (Thumb, 62 bytes, Stack size 32 bytes, queue.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 124 + Unknown Stack Size
 <LI>Call Chain = xQueueGenericCreate &rArr; pvPortMalloc &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
 </UL>
@@ -921,13 +903,14 @@ Global Symbols
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskResumeAll
 </UL>
 <BR>[Called By]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvInitialiseMutex
+<LI><a href="#[f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Periodic_Transmitter
 <LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;btnTwoEdgeScanningTask
 <LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;btnOneEdgeScanningTask
 </UL>
 
 <P><STRONG><a name="[91]"></a>xQueueCreateMutex</STRONG> (Thumb, 34 bytes, Stack size 24 bytes, queue.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvInitialiseMutex
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericCreate
+<LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericCreate
 </UL>
 
 <P><STRONG><a name="[92]"></a>xQueueGenericSendFromISR</STRONG> (Thumb, 126 bytes, Stack size 56 bytes, queue.o(.text), UNUSED)
@@ -939,7 +922,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskRemoveFromEventList
 </UL>
 
-<P><STRONG><a name="[3b]"></a>xQueueReceive</STRONG> (Thumb, 242 bytes, Stack size 40 bytes, queue.o(.text))
+<P><STRONG><a name="[3a]"></a>xQueueReceive</STRONG> (Thumb, 242 bytes, Stack size 40 bytes, queue.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 108 + Unknown Stack Size
 <LI>Call Chain = xQueueReceive &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
 </UL>
@@ -1078,9 +1061,9 @@ Global Symbols
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCheckTasksWaitingTermination
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvAddNewTaskToReadyList
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskGetTickCount
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
 </UL>
 
 <P><STRONG><a name="[4a]"></a>vPortExitCritical</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, port.o(.text))
@@ -1114,9 +1097,9 @@ Global Symbols
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCheckTasksWaitingTermination
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvAddNewTaskToReadyList
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskGetTickCount
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
 </UL>
 
 <P><STRONG><a name="[54]"></a>pvPortMalloc</STRONG> (Thumb, 170 bytes, Stack size 24 bytes, heap_2.o(.text))
@@ -1128,8 +1111,8 @@ Global Symbols
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskResumeAll
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskList
-<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericCreate
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
+<LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericCreate
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetRunTimeStats
 </UL>
 
@@ -1143,7 +1126,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vQueueDelete
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskList
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvDeleteTCB
-<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetRunTimeStats
 </UL>
 
@@ -1151,11 +1134,8 @@ Global Symbols
 
 <P><STRONG><a name="[f8]"></a>vPortInitialiseBlocks</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heap_2.o(.text), UNUSED)
 
-<P><STRONG><a name="[80]"></a>__2sprintf</STRONG> (Thumb, 36 bytes, Stack size 32 bytes, noretval__2sprintf.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120 + Unknown Stack Size
-<LI>Call Chain = __2sprintf &rArr; _printf_char_common &rArr; __printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sputc
+<P><STRONG><a name="[80]"></a>__2sprintf</STRONG> (Thumb, 36 bytes, Stack size 32 bytes, noretval__2sprintf.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sputc
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_char_common
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskList
@@ -1184,11 +1164,8 @@ Global Symbols
 <LI><a href="#[1e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_d (via Veneer)
 </UL>
 
-<P><STRONG><a name="[ac]"></a>__printf</STRONG> (Thumb, 204 bytes, Stack size 24 bytes, __printf_ss.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24 + Unknown Stack Size
-<LI>Call Chain = __printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_percent (via Veneer)
+<P><STRONG><a name="[ac]"></a>__printf</STRONG> (Thumb, 204 bytes, Stack size 24 bytes, __printf_ss.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_percent (via Veneer)
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_call_via_r2
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_call_via_r1
 </UL>
@@ -1246,11 +1223,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_int_dec
 </UL>
 
-<P><STRONG><a name="[a3]"></a>_printf_char_common</STRONG> (Thumb, 34 bytes, Stack size 64 bytes, _printf_char_common.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 88 + Unknown Stack Size
-<LI>Call Chain = _printf_char_common &rArr; __printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__printf
+<P><STRONG><a name="[a3]"></a>_printf_char_common</STRONG> (Thumb, 34 bytes, Stack size 64 bytes, _printf_char_common.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
@@ -1366,7 +1340,7 @@ Global Symbols
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__arm_div5
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__arm_div8
 </UL>
-<BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xSerialPortInitMinimal (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xSerialPortInitMinimal (via Veneer)
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetRunTimeStats (via Veneer)
 </UL>
 
@@ -1389,7 +1363,7 @@ Global Symbols
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelete (via Veneer)
 <LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvIdleTask (via Veneer)
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvAddNewTaskToReadyList (via Veneer)
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive (via Veneer)
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive (via Veneer)
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend (via Veneer)
 <LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelayUntil (via Veneer)
 </UL>
@@ -1400,7 +1374,7 @@ Global Symbols
 <P><STRONG><a name="[15]"></a>vPreemptiveTick</STRONG> (ARM, 0 bytes, Stack size unknown bytes, portasm.o(PORT_ASM))
 <BR>[Address Reference Count : 1]<UL><LI> port.o(.text)
 </UL>
-<P><STRONG><a name="[71]"></a>__ARM_common_call_via_r1</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, tasks.o(i.__ARM_common_call_via_r1))
+<P><STRONG><a name="[71]"></a>__ARM_common_call_via_r1</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, tasks.o(i.__ARM_common_call_via_r1), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__printf
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskCallApplicationTaskHook
 </UL>
@@ -1513,17 +1487,17 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[3f]"></a>configTimer1</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, main.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSetupHardware
+<P><STRONG><a name="[3e]"></a>configTimer1</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, main.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvSetupHardware
 </UL>
 
-<P><STRONG><a name="[3c]"></a>prvSetupHardware</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, main.o(.text))
+<P><STRONG><a name="[3b]"></a>prvSetupHardware</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24 + Unknown Stack Size
 <LI>Call Chain = prvSetupHardware &rArr; xSerialPortInitMinimal
 </UL>
-<BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xSerialPortInitMinimal
-<LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;configTimer1
-<LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_init
+<BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xSerialPortInitMinimal
+<LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;configTimer1
+<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1546,7 +1520,7 @@ Local Symbols
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vListInsert
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvInitialiseTaskLists
 </UL>
-<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
+<BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
 </UL>
 
 <P><STRONG><a name="[4c]"></a>prvDeleteTCB</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, tasks.o(.text))
@@ -1578,7 +1552,7 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortYield (via Veneer)
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvCheckTasksWaitingTermination
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskGetTickCount
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskSetApplicationTaskTag
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> tasks.o(.text)
 </UL>
@@ -1590,7 +1564,7 @@ Local Symbols
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vListInitialiseItem
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pxPortInitialiseStack
 </UL>
-<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
+<BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskPeriodicCreate
 </UL>
 
 <P><STRONG><a name="[57]"></a>prvResetNextTaskUnblockTime</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, tasks.o(.text))
@@ -1620,15 +1594,12 @@ Local Symbols
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskResume
 </UL>
 
-<P><STRONG><a name="[6b]"></a>prvTaskCheckFreeStackSpace</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, tasks.o(.text))
+<P><STRONG><a name="[6b]"></a>prvTaskCheckFreeStackSpace</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, tasks.o(.text), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetInfo
 </UL>
 
-<P><STRONG><a name="[6c]"></a>prvListTasksWithinSingleList</STRONG> (Thumb, 110 bytes, Stack size 40 bytes, tasks.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 148 + Unknown Stack Size
-<LI>Call Chain = prvListTasksWithinSingleList &rArr; vTaskGetInfo &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vApplicationTickHook &rArr; GPIO_toggle &rArr; GPIO_write
-</UL>
-<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetInfo
+<P><STRONG><a name="[6c]"></a>prvListTasksWithinSingleList</STRONG> (Thumb, 110 bytes, Stack size 40 bytes, tasks.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskGetInfo
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uxTaskGetSystemState
 </UL>
@@ -1646,7 +1617,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericReset
 </UL>
-<BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericCreate
+<BR>[Called By]<UL><LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericCreate
 </UL>
 
 <P><STRONG><a name="[8b]"></a>prvUnlockQueue</STRONG> (Thumb, 150 bytes, Stack size 16 bytes, queue.o(.text))
@@ -1659,7 +1630,7 @@ Local Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueuePeek
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueSemaphoreTake
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 </UL>
 
@@ -1696,7 +1667,7 @@ Local Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueuePeek
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueSemaphoreTake
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 </UL>
 
 <P><STRONG><a name="[95]"></a>prvCopyDataFromQueue</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, queue.o(.text))
@@ -1707,7 +1678,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueuePeekFromISR
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceiveFromISR
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueuePeek
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 </UL>
 
 <P><STRONG><a name="[98]"></a>prvGetDisinheritPriorityAfterTimeout</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, queue.o(.text), UNUSED)

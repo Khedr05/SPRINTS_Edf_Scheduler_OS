@@ -2709,13 +2709,13 @@ TCB_t *pxTCB;
 				/* Fill in an TaskStatus_t structure with information on each
 				task in the Blocked state. */
 				uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), ( List_t * ) pxDelayedTaskList, eBlocked );
-				//uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), ( List_t * ) pxOverflowDelayedTaskList, eBlocked );
+				uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), ( List_t * ) pxOverflowDelayedTaskList, eBlocked );
 
 				#if( INCLUDE_vTaskDelete == 1 )
 				{
 					/* Fill in an TaskStatus_t structure with information on
 					each task that has been deleted but not yet cleaned up. */
-					//uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), &xTasksWaitingTermination, eDeleted );
+					uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), &xTasksWaitingTermination, eDeleted );
 				}
 				#endif
 
@@ -2723,7 +2723,7 @@ TCB_t *pxTCB;
 				{
 					/* Fill in an TaskStatus_t structure with information on
 					each task in the Suspended state. */
-					//uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), &xSuspendedTaskList, eSuspended );
+					uxTask += prvListTasksWithinSingleList( &( pxTaskStatusArray[ uxTask ] ), &xSuspendedTaskList, eSuspended );
 				}
 				#endif
 
@@ -4787,8 +4787,7 @@ unsigned int cpuLoad = 0;
 
             pcWriteBuffer += strlen( ( char * ) pcWriteBuffer );
          }
-				    
-          sprintf( pcWriteBuffer, "\n--CPU LOad = %d--",cpuLoad);				 
+               sprintf( pcWriteBuffer, "\n--CPU LOad = %d--",cpuLoad);				 
       }
 
       /* The array is no longer needed, free the memory it consumes. */
