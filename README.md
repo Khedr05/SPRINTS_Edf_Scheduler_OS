@@ -3,7 +3,7 @@
 
 
 
-## Graduation Project
+## RTOS Graduation Project
 ### Brief
 > - Earliest Deadline First (EDF) is a scheduling algorithm that adopts a dynamic priority-based preemptive scheduling policy, meaning that the priority of a task can change during its execution, and the processing of any task is interrupted by a request for any higher priority task.
 ### Aims of the project
@@ -25,12 +25,6 @@
 ## Quick Links
 > - `Project Documentation`
     [PDF](https://github.com/sherifkhadr/SPRINTS_Edf_Scheduler_OS/tree/delivery_branch/02_Documentation)
-> - `Team Backlog`
-    [Google Sheets]()
-    [PDF]()
-> - `Test Protocol`
-    [Google Sheets]()
-    [PDF]()
 > - `Video & Simulation_Test`
     [Videos](https://github.com/sherifkhadr/SPRINTS_Edf_Scheduler_OS/tree/delivery_branch/01_Videos)
 > - ---
